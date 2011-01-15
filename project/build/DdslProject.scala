@@ -4,7 +4,17 @@ class DdslProject(info: ProjectInfo) extends DefaultProject(info) with IdeaProje
 {
 	val scalaSnapshotRepo = "scala snapshot" at "http://scala-tools.org/repo-snapshots/"
 
-  val mongo = "org.mongodb" % "mongo-java-driver" % "2.3"
+
+  //val mongo = "org.mongodb" % "mongo-java-driver" % "2.3"
+
+  val zooKeeper = "org.apache.zookeeper" % "zookeeper" % "3.3.2"
+
+  override def ivyXML =
+    <dependencies>
+      <dependency org="org.apache.zookeeper" name="zookeeper" rev="3.3.2">
+        <exclude module="log4j"/>
+      </dependency>
+    </dependencies>
 
 
 	val scalatest = "org.scalatest" % "scalatest" % "1.2"
