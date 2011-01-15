@@ -9,6 +9,8 @@ class DdslProject(info: ProjectInfo) extends DefaultProject(info) with IdeaProje
 
   val zooKeeper = "org.apache.zookeeper" % "zookeeper" % "3.3.2"
 
+  val log4j = "log4j" % "log4j" % "1.2.15" intransitive()
+
   override def ivyXML =
     <dependencies>
       <dependency org="org.apache.zookeeper" name="zookeeper" rev="3.3.2">
