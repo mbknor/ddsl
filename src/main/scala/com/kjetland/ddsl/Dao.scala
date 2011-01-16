@@ -19,10 +19,6 @@ import scala.collection.JavaConversions._
  * To change this template use File | Settings | File Templates.
  */
 
-case class ServiceId(environment : String, serviceType : String, name : String, version : String)
-case class ServiceLocation( id: ServiceId, url : String, testUrl : String, quality : Double, lastUpdated : DateTime)
-
-
 
 object DdslDataConverter{
 
@@ -35,15 +31,11 @@ object DdslDataConverter{
 
     props.put("ddslDataVersion", ddslDataVersion)
 
-    props.put( "environment", sl.id.environment)
-    props.put( "serviceType", sl.id.serviceType)
-    props.put( "name", sl.id.name)
-    props.put( "version", sl.id.version)
-    
     props.put( "url", sl.url)
     props.put( "testUrl", sl.testUrl)
     props.put( "quality", sl.quality.toString)
     props.put( "lastUpdated", dtf.print( sl.lastUpdated) )
+    props.put( "ip", sl.ip )
 
     val buffer = new ByteArrayOutputStream
     props.store( buffer, "")
@@ -63,11 +55,12 @@ object DdslDataConverter{
       throw new Exception("Incompatible dataVersion. programVersion: " + ddslDataVersion + " readVersion: " + readDdslDataVersion)
     }
 
-    val id = ServiceId(p.getProperty("environment"), p.getProperty("serviceType"), p.getProperty("name"), p.getProperty("version"))
-
-    new DateTime()
-
-    val sl = ServiceLocation(id, p.getProperty("url"), p.getProperty("testUrl"), p.getProperty("quality").toDouble, dtf.parseDateTime(p.getProperty("lastUpdated")))
+    val sl = ServiceLocation(
+      p.getProperty("url"),
+      p.getProperty("testUrl"),
+      p.getProperty("quality").toDouble,
+      dtf.parseDateTime(p.getProperty("lastUpdated")),
+      p.getProperty("ip"))
 
     return sl
   }
@@ -77,7 +70,8 @@ object DdslDataConverter{
 
 trait Dao{
 
-  def update( sl : ServiceLocation)
+  def serviceUp( s : Service)
+  def serviceDown( s : Service )
   def getSLs(id : ServiceId) : Array[ServiceLocation]
 
 }
@@ -99,22 +93,46 @@ class ZDao (val hosts : String) extends Dao with Watcher {
     return basePath + sid.environment + "/" + sid.serviceType + "/" + sid.name + "/" + sid.version
   }
 
+  def disconnect{
+    log.info("Disconnecting from zookeeper - all services will be marked as offline")
+    client.close
+  }
 
 
-  override def update( sl : ServiceLocation) {
+  override def serviceUp( s : Service) {
     
-    val path = getSidPath(sl.id)
-    val infoString = DdslDataConverter.getServiceLocationAsString( sl )
+    val path = getSidPath(s.id)
+    val infoString = DdslDataConverter.getServiceLocationAsString( s.sl )
 
     validateAndCreate( path )
 
 
-    val statusPath = getSLInstancePath( path, sl)
+    val statusPath = getSLInstancePath( path, s.sl)
 
     log.info("Writing status to path: " + statusPath)
     log.info("status: " + infoString)
 
     client.create( statusPath, infoString.getBytes("utf-8"), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL )
+  }
+
+  override def serviceDown( s : Service ) {
+
+    val path = getSidPath(s.id)
+    val statusPath = getSLInstancePath( path, s.sl)
+
+    log.info("trying to delete path: " + statusPath)
+    val stat = client.exists( statusPath, false)
+    if( stat != null ){
+      log.info("Deleting path: " + statusPath)
+      try{
+        client.delete( statusPath, stat.getVersion)
+      }catch{
+        case e: Exception => log.info("Error deleting path: " + statusPath, e)
+      }
+
+    }
+
+
   }
 
   private def getSLInstancePath( sidPath : String, sl : ServiceLocation) : String = {
@@ -181,7 +199,7 @@ class ZDao (val hosts : String) extends Dao with Watcher {
       }else{
         null
       }
-    }}.filter { _ != null}
+    }}.filter { _ != null} //remove all that was null (error while reading)
 
     
 
@@ -222,14 +240,24 @@ object ZDaoTestMain{
     val dao = new ZDao( hosts )
 
     val sid = ServiceId("test", "http", "testService", "1.0")
-    val sl = ServiceLocation(sid, "http://localhost/url", "http://localhost/test", 10.0, new DateTime())
+    val sl = ServiceLocation("http://localhost/url", "http://localhost/test", 10.0, new DateTime(), "127.0.0.1")
     Thread.sleep( 100 )
-    val sl2 = ServiceLocation(sid, "http://localhost:90/url", "http://localhost:90/test", 9.0, new DateTime())
+    val sl2 = ServiceLocation("http://localhost:90/url", "http://localhost:90/test", 9.0, new DateTime(), "127.0.0.1")
 
-    dao.update( sl )
-    dao.update( sl2 )
+    val s = Service(sid,sl)
 
+    dao.serviceUp( s )
+    dao.serviceUp( Service(sid,sl2) )
+
+    println(">>start list")
     dao.getSLs( sid).foreach{println( _ )}
+    println("<<end list")
+
+    dao.serviceDown( s )
+
+    println(">>start list")
+    dao.getSLs( sid).foreach{println( _ )}
+    println("<<end list")
 
     Thread.sleep(100000)
   }
