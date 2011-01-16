@@ -30,6 +30,7 @@ class SlListOptimizerTest extends AssertionsForJUnit with JUnitSuite{
 
     //test priority when same ip
     assertEquals( List(sl3, sl1, sl2 ), SlListOptimizer.optimize( "x", List(sl1, sl2, sl3 ).toArray).toList )
+    
   }
 
 }
