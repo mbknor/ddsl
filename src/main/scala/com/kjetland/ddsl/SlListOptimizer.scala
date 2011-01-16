@@ -72,8 +72,6 @@ object SlListOptimizer{
       //swap org list with random
       list appendAll randomizedList
 
-      println("!")
-
 
     }} )
 

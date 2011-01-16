@@ -110,7 +110,22 @@ class ZDao (val hosts : String) extends Dao with Watcher {
     val statusPath = getSLInstancePath( path, s.sl)
 
     log.info("Writing status to path: " + statusPath)
+
+
+    //just check if it exsists - if it does delete it, then insert it.
+
+    val stat = client.exists( statusPath, false)
+    if( stat != null ){
+      log.info("statusnode exists - delete it before creating it")
+      try{
+        client.delete(statusPath, stat.getVersion)
+      }catch{
+        case e:Exception => None // ignoring it..
+      }
+    }
+
     log.info("status: " + infoString)
+    
 
     client.create( statusPath, infoString.getBytes("utf-8"), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL )
   }
