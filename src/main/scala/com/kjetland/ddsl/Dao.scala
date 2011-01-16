@@ -1,13 +1,12 @@
 package com.kjetland.ddsl
 
 import org.joda.time.DateTime
-import collection.mutable.HashMap
-import scala.collection.JavaConversions._
-import org.apache.zookeeper.data.ACL
 import org.apache.log4j.Logger
 import org.apache.zookeeper.{WatchedEvent, Watcher, CreateMode, ZooKeeper}
 import org.apache.zookeeper.ZooDefs
 import java.util.Properties
+import org.joda.time.format.DateTimeFormat
+import java.io.{ByteArrayInputStream, ByteArrayOutputStream}
 
 /**
  * Created by IntelliJ IDEA.
@@ -18,23 +17,56 @@ import java.util.Properties
  */
 
 case class ServiceId(environment : String, serviceType : String, name : String, version : String)
-case class ServiceLocation( id: ServiceId, url : String, testUrl : String, quality : Double, up : Boolean, lastUpdated : DateTime)
+case class ServiceLocation( id: ServiceId, url : String, testUrl : String, quality : Double, lastUpdated : DateTime)
+
 
 
 object DdslDataConverter{
 
   val ddslDataVersion = "1.0"
 
+  private val dtf = DateTimeFormat.forPattern("yyyyMMdd HH:mm:ss")
+
   def getServiceLocationAsString( sl : ServiceLocation) : String = {
     val props = new Properties()
 
-    
+    props.put("ddslDataVersion", ddslDataVersion)
 
-    return "test"
+    props.put( "environment", sl.id.environment)
+    props.put( "serviceType", sl.id.serviceType)
+    props.put( "name", sl.id.name)
+    props.put( "version", sl.id.version)
+    
+    props.put( "url", sl.url)
+    props.put( "testUrl", sl.testUrl)
+    props.put( "quality", sl.quality.toString)
+    props.put( "lastUpdated", dtf.print( sl.lastUpdated) )
+
+    val buffer = new ByteArrayOutputStream
+    props.store( buffer, "")
+
+
+    return buffer.toString
   }
 
   def getServiceLocationFromString( s : String) : ServiceLocation = {
-    return ServiceLocation(null, null, null, 0.0, false,null)
+    val buffer = new ByteArrayInputStream(s.getBytes("iso-8859-1"))
+    val p = new Properties
+    p.load(buffer)
+
+    val readDdslDataVersion = p.get("ddslDataVersion")
+
+    if( !ddslDataVersion.equals( readDdslDataVersion)){
+      throw new Exception("Incompatible dataVersion. programVersion: " + ddslDataVersion + " readVersion: " + readDdslDataVersion)
+    }
+
+    val id = ServiceId(p.getProperty("environment"), p.getProperty("serviceType"), p.getProperty("name"), p.getProperty("version"))
+
+    new DateTime()
+
+    val sl = ServiceLocation(id, p.getProperty("url"), p.getProperty("testUrl"), p.getProperty("quality").toDouble, dtf.parseDateTime(p.getProperty("lastUpdated")))
+
+    return sl
   }
 
 

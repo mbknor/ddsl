@@ -19,7 +19,7 @@ object Main{
     val dao = new ZDao( hosts )
 
     val sid = ServiceId("test", "http", "testService", "1.0")
-    val sl = ServiceLocation(sid, "http://localhost/url", "http://localhost/test", 10.0, true, new DateTime())
+    val sl = ServiceLocation(sid, "http://localhost/url", "http://localhost/test", 10.0, new DateTime())
 
     dao.update( sl )
 
