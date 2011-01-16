@@ -49,12 +49,25 @@ class DdslClientImpl(hosts : String) extends DdslClient{
   }
 
 
-  override def serviceUp( s : Service) {
+  override def serviceUp( service : Service) {
+    val s = checkAndFillInHostIp( service )
     log.info("Marking service up: " + s)
     dao.serviceUp( s )
   }
 
-  override def serviceDown( s : Service ) {
+  private def checkAndFillInHostIp(s : Service) : Service = {
+    //TODO: not impl yet
+    //use checkAndResolveLocalIp
+    s
+  }
+
+  private def checkAndResolveLocalIp( ip : String) : String = {
+    //TODO: not impl yet - resolve local ip id null
+    ip
+  }
+
+  override def serviceDown( service : Service ) {
+    val s = checkAndFillInHostIp( service )
     log.info("Marking service down: " + s)
     dao.serviceDown( s )
   }
@@ -63,7 +76,11 @@ class DdslClientImpl(hosts : String) extends DdslClient{
     log.info("Client "+sr.cid+" asking for Service "+sr.sid)
     val sls = dao.getSLs(sr.sid)
 
-    val fixedSls = SlListOptimizer.optimize( sr.cid, sls)
+
+
+    val clientIp = checkAndResolveLocalIp( sr.cid.ip )
+
+    val fixedSls = SlListOptimizer.optimize( clientIp, sls)
 
     log.info("ServiceLocations: " + fixedSls)
     return fixedSls
