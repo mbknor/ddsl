@@ -8,6 +8,8 @@ import java.util.Properties
 import org.joda.time.format.DateTimeFormat
 import java.io.{ByteArrayInputStream, ByteArrayOutputStream}
 import org.apache.commons.codec.net.URLCodec
+import org.apache.zookeeper.data.Stat
+import scala.collection.JavaConversions._
 
 /**
  * Created by IntelliJ IDEA.
@@ -76,7 +78,7 @@ object DdslDataConverter{
 trait Dao{
 
   def update( sl : ServiceLocation)
-  def getSLs(id : ServiceId) : ServiceLocation
+  def getSLs(id : ServiceId) : Array[ServiceLocation]
 
 }
 
@@ -154,9 +156,36 @@ class ZDao (val hosts : String) extends Dao with Watcher {
 
   }
 
-  override def getSLs(id : ServiceId) : ServiceLocation = {
+  override def getSLs(id : ServiceId) : Array[ServiceLocation] = {
 
-    throw new Exception("not impl yet");
+    def getInfoString( path : String ) : String = {
+
+      try{
+        val stat = new Stat
+        val bytes = client.getData( path, false, stat)
+        new String( bytes, "utf-8")
+      }catch{
+        case _ => null //return null if error - node might have gone offline since we created the list
+      }
+
+    }
+
+    val sidPath = getSidPath( id )
+
+    val slList = client.getChildren( sidPath, false).map { path : String => {
+
+      val string = getInfoString( sidPath+"/"+path )
+
+      if( string != null ) {
+        DdslDataConverter.getServiceLocationFromString( string )
+      }else{
+        null
+      }
+    }}.filter { _ != null}
+
+    
+
+    return slList.toArray
   }
 
 
