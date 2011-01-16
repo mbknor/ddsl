@@ -1,5 +1,7 @@
 package com.kjetland.ddsl
 
+import org.joda.time.DateTime
+
 /**
  * Created by IntelliJ IDEA.
  * User: mortenkjetland
@@ -12,5 +14,17 @@ object Main{
 
   def main ( args : Array[String]){
     println("hw")
+
+    val hosts = "localhost:2181"
+    val dao = new ZDao( hosts )
+
+    val sid = ServiceId("test", "http", "testService", "1.0")
+    val sl = ServiceLocation(sid, "http://localhost/url", "http://localhost/test", 10.0, true, new DateTime())
+
+    dao.update( sl )
+
+    Thread.sleep(100000)
+
+
   }
 }
