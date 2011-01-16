@@ -19,13 +19,17 @@ class SlListOptimizerTest extends AssertionsForJUnit with JUnitSuite{
   @Test def verifyOptimizing(){
 
     val sl1 = ServiceLocation("u1", "tu1", DdslDefaults.DEFAULT_QUALITY, new DateTime(), "ip1")
-    val sl2 = ServiceLocation("u1", "tu1", DdslDefaults.DEFAULT_QUALITY-1.0, new DateTime(), "ip2")
+    val sl2 = ServiceLocation("u2", "tu2", DdslDefaults.DEFAULT_QUALITY-1.0, new DateTime(), "ip2")
+    val sl3 = ServiceLocation("u3", "tu3", DdslDefaults.DEFAULT_QUALITY, new DateTime(), "x")
 
 
     val list = List(sl1, sl2 )
     
-    assertEquals( List(sl1, sl2 ), SlListOptimizer.optimize( "x", List(sl1, sl2 ).toArray) )
-    assertEquals( List(sl1, sl2 ), SlListOptimizer.optimize( "x", List(sl2, sl1 ).toArray) )
+    assertEquals( List(sl1, sl2 ), SlListOptimizer.optimize( "x", List(sl1, sl2 ).toArray).toList )
+    assertEquals( List(sl1, sl2 ), SlListOptimizer.optimize( "x", List(sl2, sl1 ).toArray).toList )
+
+    //test priority when same ip
+    assertEquals( List(sl3, sl1, sl2 ), SlListOptimizer.optimize( "x", List(sl1, sl2, sl3 ).toArray).toList )
   }
 
 }
