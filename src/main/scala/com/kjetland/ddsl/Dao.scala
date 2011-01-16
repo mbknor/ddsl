@@ -7,6 +7,7 @@ import org.apache.zookeeper.ZooDefs
 import java.util.Properties
 import org.joda.time.format.DateTimeFormat
 import java.io.{ByteArrayInputStream, ByteArrayOutputStream}
+import org.apache.commons.codec.net.URLCodec
 
 /**
  * Created by IntelliJ IDEA.
@@ -106,12 +107,21 @@ class ZDao (val hosts : String) extends Dao with Watcher {
     validateAndCreate( path )
 
 
-    val statusPath = path + "/status"
+    val statusPath = getSLInstancePath( path, sl)
 
     log.info("Writing status to path: " + statusPath)
     log.info("status: " + infoString)
 
     client.create( statusPath, infoString.getBytes("utf-8"), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL )
+  }
+
+  private def getSLInstancePath( sidPath : String, sl : ServiceLocation) : String = {
+    //url is the key to this instance of this service
+    //it must be urlencoded to be a valid path-node-name
+    val encodedUrl = new URLCodec().encode(sl.url)
+
+    return sidPath + "/" + encodedUrl
+
   }
 
   private def validateAndCreate( path : String) {

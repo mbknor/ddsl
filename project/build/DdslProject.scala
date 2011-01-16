@@ -22,4 +22,6 @@ class DdslProject(info: ProjectInfo) extends DefaultProject(info) with IdeaProje
 	val scalatest = "org.scalatest" % "scalatest" % "1.2"
 	val junit = "junit" % "junit" % "4.8.2"
 	val jodaTime = "joda-time" % "joda-time" % "1.6.2"
+
+  val codec = "commons-codec" % "commons-codec" % "1.4"
 }
