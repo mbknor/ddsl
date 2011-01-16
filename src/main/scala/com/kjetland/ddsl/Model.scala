@@ -20,5 +20,7 @@ case class ClientId(environment : String, name : String, version : String, ip : 
 
 case class ServiceRequest( sid : ServiceId, cid : ClientId )
 
-
+object DdslDefaults{
+  val DEFAULT_QUALITY = 0.0
+}
 

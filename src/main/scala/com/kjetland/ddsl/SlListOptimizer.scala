@@ -22,7 +22,7 @@ object SlListOptimizer{
    *
    *
    */
-  def optimize( clientId : ClientId, sls : Array[ServiceLocation]) : Array[ServiceLocation] = {
+  def optimize( clientIp : String, sls : Array[ServiceLocation]) : Array[ServiceLocation] = {
 
     return sls
   }
