@@ -15,8 +15,8 @@ import org.joda.time.DateTime
 
 trait DdslClient {
 
-  def serviceUp( s : Service)
-  def serviceDown( s : Service )
+  def serviceUp( s : Service) : Boolean
+  def serviceDown( s : Service ) : Boolean
   def getServiceLocations(sr : ServiceRequest) : Array[ServiceLocation]
   def getBestServiceLocation(sr : ServiceRequest) : ServiceLocation
   def disconnect()
@@ -118,11 +118,34 @@ class DdslClientImpl(hosts : String) extends DdslClient{
   }
 
 
-  override def serviceUp( service : Service) {
-    val s = checkAndFillInHostIp( service )
-    log.info("Marking service up: " + s)
-    dao.serviceUp( s )
+  override def serviceUp( service : Service) : Boolean = {
+    try{
+      val s = checkAndFillInHostIp( service )
+      log.info("Marking service up: " + s)
+      dao.serviceUp( s )
+      return true
+    }catch{
+      case e : Exception => {
+        log.error("Error marking service '"+service+"' as up", e)
+        return false
+      }
+    }
   }
+
+  override def serviceDown( service : Service ) : Boolean = {
+    try{
+      val s = checkAndFillInHostIp( service )
+      log.info("Marking service down: " + s)
+      dao.serviceDown( s )
+      return true
+    }catch{
+      case e: Exception => {
+        log.error("Error marking service '"+service+"' as down", e)
+        return false
+      }
+    }
+  }
+
 
   private def checkAndFillInHostIp(s : Service) : Service = {
 
@@ -150,24 +173,26 @@ class DdslClientImpl(hosts : String) extends DdslClient{
 
 
 
-  override def serviceDown( service : Service ) {
-    val s = checkAndFillInHostIp( service )
-    log.info("Marking service down: " + s)
-    dao.serviceDown( s )
-  }
 
   override def getServiceLocations(sr : ServiceRequest) : Array[ServiceLocation] = {
-    log.info("Client "+sr.cid+" asking for Service "+sr.sid)
-    val sls = dao.getSLs(sr.sid)
+    try{
+      log.info("Client "+sr.cid+" asking for Service "+sr.sid)
+      val sls = dao.getSLs(sr.sid)
 
 
 
-    val clientIp = checkAndResolveLocalIp( sr.cid.ip )
+      val clientIp = checkAndResolveLocalIp( sr.cid.ip )
 
-    val fixedSls = SlListOptimizer.optimize( clientIp, sls)
+      val fixedSls = SlListOptimizer.optimize( clientIp, sls)
 
-    log.info("ServiceLocations: " + fixedSls)
-    return fixedSls
+      log.info("ServiceLocations: " + fixedSls)
+      return fixedSls
+    }catch{
+      case e: Exception => {
+        log.error("Error resolving ServiceLocations for '"+sr+"'. trying fallbacksollution.", e)
+        return FallbackClient.resolveServiceLocations( sr )
+      }
+    }
   }
 
   override def getBestServiceLocation(sr : ServiceRequest) : ServiceLocation = {
@@ -180,8 +205,12 @@ class DdslClientImpl(hosts : String) extends DdslClient{
   }
 
   override def disconnect() {
-    log.info("Disconnecting")
-    dao.disconnect
+    try{
+      log.info("Disconnecting")
+      dao.disconnect
+    }catch{
+      case e : Exception => log.error("Error disconnecting", e)
+    }
   }
 
 
