@@ -13,6 +13,7 @@ import java.util.Random
 
 object SlListOptimizer{
 
+
   /**
    * Sorts the list of available service locations.
    *
@@ -57,19 +58,12 @@ object SlListOptimizer{
 
     //randomize content of each list
 
-    val random = new Random( System.currentTimeMillis )
-
     q2list.values.foreach( { list: ListBuffer[ServiceLocation] => {
 
 
-      val randomizedList = new ListBuffer[ServiceLocation]
-      while( !list.isEmpty ){
-        val index = random.nextInt(list.size)
-        val sl = list.remove( index)
-        randomizedList + sl
-      }
-
       //swap org list with random
+      val randomizedList = randomizeList( list )
+      list.clear
       list appendAll randomizedList
 
 
@@ -88,5 +82,18 @@ object SlListOptimizer{
 
     finalList.toArray
 
+  }
+
+  def randomizeList[T]( orgList : ListBuffer[T]) : ListBuffer[T] = {
+    val list = new ListBuffer[T]
+    list appendAll orgList
+    val randomizedList = new ListBuffer[T]
+    while( !list.isEmpty ){
+      val index = (Math.random * list.size).toInt
+      val sl = list.remove( index)
+      randomizedList + sl
+    }
+
+    return randomizedList
   }
 }

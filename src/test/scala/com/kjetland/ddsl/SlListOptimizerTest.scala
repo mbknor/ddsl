@@ -4,6 +4,7 @@ import org.scalatest.junit.{JUnitSuite, AssertionsForJUnit}
 import org.junit.Test
 import org.junit.Assert._
 import org.joda.time.DateTime
+import collection.mutable.ListBuffer
 
 /**
  * Created by IntelliJ IDEA.
@@ -31,6 +32,40 @@ class SlListOptimizerTest extends AssertionsForJUnit with JUnitSuite{
     //test priority when same ip
     assertEquals( List(sl3, sl1, sl2 ), SlListOptimizer.optimize( "x", List(sl1, sl2, sl3 ).toArray).toList )
     
+  }
+
+  @Test def verifyRandomizeList{
+
+    //try x times to get a list that is not equal to org list
+    //must do this since the randomlist might bee equal to orglist
+    def randomizeAndCheckUniqness( maxTryCount : Int, orgList : ListBuffer[Int]) : ListBuffer[Int] = {
+      if( orgList.size <= 1) return orgList
+      if( maxTryCount <= 0) throw new Exception("Unable to get different randomlist")
+      val randList = SlListOptimizer.randomizeList( orgList )
+      return if( randList == orgList ){
+        //retry
+        randomizeAndCheckUniqness( maxTryCount - 1, orgList)
+      }else randList
+    }
+
+    def testRandom( orgList : List[Int]){
+      val lb = new ListBuffer[Int]
+      lb appendAll orgList
+      val randList = randomizeAndCheckUniqness( 10, lb )
+
+      assertEquals( lb.size, randList.size)
+
+      assertEquals( lb.sorted, randList.sorted)
+    }
+
+    testRandom( List(1,2,3,4,5,6,7,8,9,10) )
+
+    testRandom( List(1,2,3) )
+
+    testRandom( List(1,2) )
+    testRandom( List(1) )
+    testRandom( List() )
+
   }
 
 }
