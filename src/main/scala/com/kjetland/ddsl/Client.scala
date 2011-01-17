@@ -102,18 +102,21 @@ class DdslClientImpl(hosts : String) extends DdslClient{
 
   private def verifyHosts( hosts : String) : String = {
 
-    return if( hosts == null ){
+    val hostsToUse = if( hosts == null ){
       log.info("Hosts not specified. Reading from system environment variable '"+hostsEnvName+"'")
       val hostsFromEnv = System.getProperty( hostsEnvName)
       if( hostsFromEnv == null ){
         throw new Exception("Cannot continue without hosts-list: not supplied and not found in system env '"+hostsEnvName+"'")
       }
-      log.info("Found hostslist: " + hostsFromEnv)
       hostsFromEnv
       
     }else{
       hosts
     }
+
+    log.info("Using hostslist: " + hostsToUse)
+
+    hostsToUse
 
   }
 
