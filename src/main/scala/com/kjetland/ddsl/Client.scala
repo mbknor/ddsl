@@ -24,8 +24,10 @@ trait DdslClient {
 }
 
 
-//TODO: move failover code to new client, which wraps real impl
-//TODO: create another higherlevel failover impl which uses presupplied url if no ddsl-config is pressent
+//TODO: create another higherlevel failover impl:
+// which uses presupplied url if no ddsl-config is pressent
+//not sure if that is needed - it would work to use the regular override mechanism..
+
 
 class DdslClientImpl(hosts : String) extends DdslClient{
 
@@ -126,7 +128,7 @@ class DdslClientImpl(hosts : String) extends DdslClient{
 
       val fixedSls = SlListOptimizer.optimize( clientIp, sls)
 
-      log.info("ServiceLocations: " + fixedSls)
+      //log.info("ServiceLocations: " + fixedSls)
       return fixedSls
     }catch{
       case e: Exception => {
@@ -155,6 +157,6 @@ class DdslClientImpl(hosts : String) extends DdslClient{
   }
 
 
-
-
 }
+
+
