@@ -62,12 +62,6 @@ class DdslJavaClientImpl( hosts : String){
 //case class ServiceId(environment : String, serviceType : String, name : String, version : String)
 class ServiceIdJava(val environment : String, val serviceType : String, val name : String, val version : String){
 
-  //create getters for java
-  def getEnvironment() = environment
-  def getServiceType() = serviceType
-  def getName() = name
-  def getVersion() = version
-
   def getCC = ServiceId( environment, serviceType, name, version )
 
   override def toString() = getCC.toString
@@ -77,13 +71,6 @@ class ServiceIdJava(val environment : String, val serviceType : String, val name
 //case class ServiceLocation( url : String, testUrl : String, quality : Double, lastUpdated : DateTime, ip : String)
 class ServiceLocationJava(val url : String, val testUrl : String, val quality : Double, val lastUpdated : DateTime, val ip : String){
 
-  //create getters for java
-  def getUrl() = url
-  def getTestUrl() = testUrl
-  def getQuality() = quality
-  def getLastUpdated() = lastUpdated
-  def getIp() = ip
-
   def getCC = ServiceLocation(url, testUrl, quality, lastUpdated, ip)
 
   override def toString() = getCC.toString
@@ -92,12 +79,6 @@ class ServiceLocationJava(val url : String, val testUrl : String, val quality : 
 }
 //case class ClientId(environment : String, name : String, version : String, ip : String)
 class ClientIdJava(val environment : String, val name : String, val version : String, val ip : String){
-
-  //create getters for java
-  def getEnvironment() = environment
-  def getName() = name
-  def getVersion() = version
-  def getIp() = ip
 
   def getCC = ClientId(environment, name, version, ip)
 

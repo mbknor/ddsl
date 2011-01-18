@@ -23,6 +23,7 @@ trait DdslClient {
 
 }
 
+//TODO: Create conveniance client that cashed result for some time..
 
 //TODO: create another higherlevel failover impl:
 // which uses presupplied url if no ddsl-config is pressent
@@ -44,7 +45,12 @@ class DdslClientImpl(hosts : String) extends DdslClient{
 
     val hostsToUse = if( hosts == null ){
       log.info("Hosts not specified. Reading from system environment variable '"+hostsEnvName+"'")
-      val hostsFromEnv = System.getProperty( hostsEnvName)
+      //first try java properties
+      val hostsFromEnv = System.getProperty( hostsEnvName) match {
+        case s : String => s
+        case _ => System.getenv( hostsEnvName )
+      }
+
       if( hostsFromEnv == null ){
         throw new Exception("Cannot continue without hosts-list: not supplied and not found in system env '"+hostsEnvName+"'")
       }
@@ -129,6 +135,9 @@ class DdslClientImpl(hosts : String) extends DdslClient{
       val fixedSls = SlListOptimizer.optimize( clientIp, sls)
 
       //log.info("ServiceLocations: " + fixedSls)
+
+      //TODO: if we get no error but no result we should try fallback client
+
       return fixedSls
     }catch{
       case e: Exception => {
