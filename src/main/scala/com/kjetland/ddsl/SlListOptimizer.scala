@@ -46,10 +46,10 @@ object SlListOptimizer{
         }
       
       q2list.get( quality ) match {
-        case Some(list : ListBuffer[ServiceLocation]) => list + sl
+        case Some(list : ListBuffer[ServiceLocation]) => list += sl
         case None => {
           val list = new ListBuffer[ServiceLocation]
-          list + sl
+          list += sl
           q2list.put( quality, list)
         }
       }
@@ -89,9 +89,9 @@ object SlListOptimizer{
     list appendAll orgList
     val randomizedList = new ListBuffer[T]
     while( !list.isEmpty ){
-      val index = (Math.random * list.size).toInt
+      val index = (scala.math.random * list.size).toInt
       val sl = list.remove( index)
-      randomizedList + sl
+      randomizedList += sl
     }
 
     return randomizedList
