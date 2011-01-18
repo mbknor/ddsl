@@ -32,6 +32,7 @@ class FallbackClientTest extends AssertionsForJUnit with JUnitSuite{
   }
 
   @Test def verifyPathResolving{
+    System.setProperty( FallbackClient.pathSystemEnvName, "")
     assertEquals( FallbackClient.defaultPath, FallbackClient.getPath)
 
     System.setProperty(FallbackClient.pathSystemEnvName, testPath)

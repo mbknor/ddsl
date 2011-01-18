@@ -73,8 +73,9 @@ object FallbackClient{
   }
 
   def getPath : String = {
+    //TODO: Must load from env also
     val path = System.getProperty( pathSystemEnvName)
-    return if( path != null) path else {
+    return if( path != null && path.length > 0) path else {
       log.error("system env variable named '"+pathSystemEnvName+"' does not exists. using default path: " + defaultPath)
       defaultPath
     }

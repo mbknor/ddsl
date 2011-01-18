@@ -11,11 +11,7 @@ import com.kjetland.ddsl._
  * To change this template use File | Settings | File Templates.
  */
 
-class DdslJavaClientImpl( hosts : String){
-
-  def this() = this(null)
-
-  private val c = new DdslClientImpl( hosts )
+class DdslClientJavaWrapper( ddslClient : DdslClient){
 
   implicit private def sidj2sid( s :ServiceIdJava) = {
     ServiceId(s.environment, s.serviceType, s.name, s.version)
@@ -30,22 +26,22 @@ class DdslJavaClientImpl( hosts : String){
   }
 
 
-  def serviceUp( sid : ServiceIdJava, sl:ServiceLocationJava) : Boolean = c.serviceUp( Service(sid, sl) )
-  def serviceDown( sid : ServiceIdJava, sl:ServiceLocationJava) : Boolean = c.serviceDown( Service(sid, sl) )
+  def serviceUp( sid : ServiceIdJava, sl:ServiceLocationJava) : Boolean = ddslClient.serviceUp( Service(sid, sl) )
+  def serviceDown( sid : ServiceIdJava, sl:ServiceLocationJava) : Boolean = ddslClient.serviceDown( Service(sid, sl) )
 
   def getServiceLocations(sid : ServiceIdJava, cid : ClientIdJava) : Array[ServiceLocationJava] = {
-    val srs = c.getServiceLocations( ServiceRequest( sid, cid))
+    val srs = ddslClient.getServiceLocations( ServiceRequest( sid, cid))
 
     return srs.map( {sl : ServiceLocation =>
       sl2slj(sl)} ).toArray
   }
 
   def getBestServiceLocation(sid : ServiceIdJava, cid : ClientIdJava) : ServiceLocationJava = {
-    val sl = c.getBestServiceLocation( ServiceRequest(sid, cid) )
+    val sl = ddslClient.getBestServiceLocation( ServiceRequest(sid, cid) )
     return sl2slj( sl)
   }
 
-  def disconnect() = c.disconnect
+  def disconnect() = ddslClient.disconnect
 
 
 

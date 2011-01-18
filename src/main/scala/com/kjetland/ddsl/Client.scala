@@ -3,6 +3,7 @@ package com.kjetland.ddsl
 import org.apache.log4j.Logger
 import java.net.InetAddress
 import org.joda.time.DateTime
+import collection.mutable.HashMap
 
 /**
  * Created by IntelliJ IDEA.
@@ -18,54 +19,27 @@ trait DdslClient {
   def serviceUp( s : Service) : Boolean
   def serviceDown( s : Service ) : Boolean
   def getServiceLocations(sr : ServiceRequest) : Array[ServiceLocation]
-  def getBestServiceLocation(sr : ServiceRequest) : ServiceLocation
   def disconnect()
 
-}
-
-//TODO: Create conveniance client that cashed result for some time..
-
-//TODO: create another higherlevel failover impl:
-// which uses presupplied url if no ddsl-config is pressent
-//not sure if that is needed - it would work to use the regular override mechanism..
-
-
-class DdslClientImpl(hosts : String) extends DdslClient{
-
-  def this() = this( null )
-
-  private val log = Logger.getLogger( getClass )
-
-  val hostsEnvName = "ZOOKEEPER_HOSTS"
-
-  val dao = new ZDao( verifyHosts(hosts) )
-
-
-  private def verifyHosts( hosts : String) : String = {
-
-    val hostsToUse = if( hosts == null ){
-      log.info("Hosts not specified. Reading from system environment variable '"+hostsEnvName+"'")
-      //first try java properties
-      val hostsFromEnv = System.getProperty( hostsEnvName) match {
-        case s : String => s
-        case _ => System.getenv( hostsEnvName )
-      }
-
-      if( hostsFromEnv == null ){
-        throw new Exception("Cannot continue without hosts-list: not supplied and not found in system env '"+hostsEnvName+"'")
-      }
-      hostsFromEnv
-      
-    }else{
-      hosts
-    }
-
-    log.info("Using hostslist: " + hostsToUse)
-
-    hostsToUse
+  def getBestServiceLocation(sr : ServiceRequest) : ServiceLocation = {
+    getServiceLocations(sr)(0)//should always at least contain one element - pick the first/best one
 
   }
 
+
+}
+
+
+
+
+class DdslClientImpl( config : DdslConfig) extends DdslClient{
+
+  //default config is sys env
+  def this() = this( new DdslConfigSysEnvImpl )
+
+  private val log = Logger.getLogger( getClass )
+
+  val dao = new ZDao( config.hosts )
 
   override def serviceUp( service : Service) : Boolean = {
     try{
@@ -134,9 +108,7 @@ class DdslClientImpl(hosts : String) extends DdslClient{
 
       val fixedSls = SlListOptimizer.optimize( clientIp, sls)
 
-      //log.info("ServiceLocations: " + fixedSls)
-
-      //TODO: if we get no error but no result we should try fallback client
+      if( fixedSls.size == 0) throw new Exception("ZooKeeper works ok - but no available serviceLocation found")
 
       return fixedSls
     }catch{
@@ -147,14 +119,7 @@ class DdslClientImpl(hosts : String) extends DdslClient{
     }
   }
 
-  override def getBestServiceLocation(sr : ServiceRequest) : ServiceLocation = {
-    val sls = getServiceLocations(sr)
-    if( sls.isEmpty ){
-      null
-    }else{
-      sls(0)
-    }
-  }
+
 
   override def disconnect() {
     try{
@@ -169,3 +134,80 @@ class DdslClientImpl(hosts : String) extends DdslClient{
 }
 
 
+class DdslClientOnlyFallbackImpl extends DdslClient {
+
+  private val log = Logger.getLogger(getClass)
+
+  override def serviceUp( s : Service) : Boolean = {
+    log.info("Ignoring serviceUp: " + s)
+    false
+  }
+
+  override def serviceDown( s : Service ) : Boolean = {
+    log.info("Ignoring serviceDown: " + s)
+    false
+  }
+
+  override def getServiceLocations(sr : ServiceRequest) : Array[ServiceLocation] = {
+    FallbackClient.resolveServiceLocations( sr )
+  }
+
+  override def disconnect() = {}//nothing to do
+
+}
+
+
+/**
+ * This is a cache that caches read results for some time..
+ * Convenient to use when you don't want to lookup serviceLocation
+ * all the time put Don't want to mess with when to refresh serviceLocations
+ */
+class DdslClientCacheReadsImpl( realClient : DdslClient, ttl_mills : Long) extends DdslClient {
+
+  private val log = Logger.getLogger( getClass )
+
+  var lastCacheClear  = System.currentTimeMillis
+  val cache = new HashMap[String, ServiceLocation]
+
+
+
+  override def serviceUp( s : Service) : Boolean = realClient.serviceUp( s )
+
+  override def serviceDown( s : Service ) : Boolean = realClient.serviceDown( s )
+
+  override def getServiceLocations(sr : ServiceRequest) : Array[ServiceLocation] = realClient.getServiceLocations( sr)
+
+  override def getBestServiceLocation(sr : ServiceRequest) : ServiceLocation = {
+    checkAndInvalidateCache
+
+    //look in cache
+    val key = sr.toString
+
+    cache.get( key ) match {
+      case Some(sl : ServiceLocation) => {
+        log.debug("Returning cached result for " + sr + ": " + sl)
+        sl
+      }
+      case None => {
+        log.debug( "Querying real sl for " + sr)
+        val sl = realClient.getBestServiceLocation( sr )
+        log.debug( "Got real sl for " + sr + ": " + sl)
+        sl
+
+      }
+    }
+  }
+
+  private def checkAndInvalidateCache {
+    val now = System.currentTimeMillis
+    val millsSinceLastCacheClear = now - lastCacheClear
+    if( millsSinceLastCacheClear > ttl_mills ){
+      log.info("Clearing cache")
+      cache.clear
+      lastCacheClear = System.currentTimeMillis
+    }
+  }
+  
+  override def disconnect() = realClient.disconnect
+
+}

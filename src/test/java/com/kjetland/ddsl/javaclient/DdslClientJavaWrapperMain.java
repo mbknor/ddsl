@@ -1,6 +1,6 @@
 package com.kjetland.ddsl.javaclient;
 
-import com.kjetland.ddsl.ServiceLocation;
+import com.kjetland.ddsl.*;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 
@@ -11,13 +11,13 @@ import org.joda.time.DateTime;
  * Time: 7:42 AM
  * To change this template use File | Settings | File Templates.
  */
-public class DdslJavaClientImplMain {
+public class DdslClientJavaWrapperMain {
 
-    private static Logger log = Logger.getLogger(DdslJavaClientImplMain.class);
+    private static Logger log = Logger.getLogger(DdslClientJavaWrapperMain.class);
 
     public static void main(String[] args){
         try{
-            doStuff();
+            new DdslClientJavaWrapperMain().doStuff();
 
         }catch(Exception e){
             log.error("Got error in java", e);
@@ -25,7 +25,7 @@ public class DdslJavaClientImplMain {
     }
 
 
-    public static void doStuff(){
+    public void doStuff(){
 
         ServiceIdJava sid = new ServiceIdJava("test", "http", "testJavaService", "1.0");
         log.info("sid: " + sid);
@@ -36,7 +36,11 @@ public class DdslJavaClientImplMain {
         ClientIdJava cid = new ClientIdJava("test", "testClient", "0.1", null);
         log.info("cid: " + cid);
 
-        DdslJavaClientImpl c = new DdslJavaClientImpl("localhost:2181");
+
+        DdslConfig ddslConfig = new DdslConfigManualImpl( "localhost:2181" );
+        DdslClient ddslClient = new DdslClientImpl( ddslConfig );
+
+        DdslClientJavaWrapper c = new DdslClientJavaWrapper( ddslClient );
         c.serviceUp(sid, sl);
 
         ServiceLocationJava[] sls = c.getServiceLocations(sid, cid);
