@@ -1,6 +1,5 @@
-DDSL
+DDSL - Dynamic Distributed Service Locator
 ===================
 
-Dynamic Distributed Service Locator
------------------------
 
+(More information soon)
