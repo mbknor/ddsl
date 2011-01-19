@@ -1,7 +1,8 @@
-package com.kjetland.ddsl
+package com.kjetland.ddsl.examples
 
 import org.joda.time.DateTime
 import org.apache.log4j.Logger
+import com.kjetland.ddsl._
 
 /**
  * Created by IntelliJ IDEA.
@@ -23,7 +24,7 @@ object DdslClientImplMain{
   }
 
   def doStuff(){
-    val client = new DdslClientImpl
+    val client = new DdslClientImpl( new DdslConfigManualImpl("localhost:2181"))
 
     val sid = ServiceId("test", "http", "testService", "1.0")
     val sl = ServiceLocation("http://localhost/url", "http://localhost/test", 10.0, new DateTime(),null)//ip == null -> will be resolved
@@ -69,7 +70,7 @@ object DdslClientImplMain{
 
 
 
-    Thread.sleep(100000)
+    //Thread.sleep(100000)
 
   }
 
