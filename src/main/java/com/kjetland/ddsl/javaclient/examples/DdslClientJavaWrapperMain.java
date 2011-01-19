@@ -1,6 +1,10 @@
-package com.kjetland.ddsl.javaclient;
+package com.kjetland.ddsl.javaclient.examples;
 
 import com.kjetland.ddsl.*;
+import com.kjetland.ddsl.javaclient.ClientIdJava;
+import com.kjetland.ddsl.javaclient.DdslClientJavaWrapper;
+import com.kjetland.ddsl.javaclient.ServiceIdJava;
+import com.kjetland.ddsl.javaclient.ServiceLocationJava;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 

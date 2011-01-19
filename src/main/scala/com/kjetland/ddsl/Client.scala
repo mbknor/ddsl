@@ -35,7 +35,7 @@ trait DdslClient {
 class DdslClientImpl( config : DdslConfig) extends DdslClient{
 
   //default config is sys env
-  def this() = this( new DdslConfigSysEnvImpl )
+  def this() = this( new DdslConfigSysEnvReloading )
 
   private val log = Logger.getLogger( getClass )
 
@@ -114,7 +114,7 @@ class DdslClientImpl( config : DdslConfig) extends DdslClient{
     }catch{
       case e: Exception => {
         log.error("Error resolving ServiceLocations for '"+sr+"'. trying fallbacksollution.", e)
-        return FallbackClient.resolveServiceLocations( sr )
+        return FallbackClient.resolveServiceLocations( config, sr )
       }
     }
   }
@@ -134,7 +134,7 @@ class DdslClientImpl( config : DdslConfig) extends DdslClient{
 }
 
 
-class DdslClientOnlyFallbackImpl extends DdslClient {
+class DdslClientOnlyFallbackImpl( config : DdslConfig) extends DdslClient {
 
   private val log = Logger.getLogger(getClass)
 
@@ -149,7 +149,7 @@ class DdslClientOnlyFallbackImpl extends DdslClient {
   }
 
   override def getServiceLocations(sr : ServiceRequest) : Array[ServiceLocation] = {
-    FallbackClient.resolveServiceLocations( sr )
+    FallbackClient.resolveServiceLocations( config, sr )
   }
 
   override def disconnect() = {}//nothing to do

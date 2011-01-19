@@ -32,90 +32,16 @@ import org.joda.time.DateTime
 object FallbackClient{
 
   val log = Logger.getLogger( getClass )
-  val pathSystemEnvName = "DDSL_FALLBACK_FILE"
-  val defaultPath = """c:\ddsl_fallback.properties"""
 
-  def resolveServiceLocations( sr : ServiceRequest) : Array[ServiceLocation] = {
-
-
-
-    val sidKey = getServiceIdKey( sr.sid )
-
-    log.error("Trying fallback solution - reading url from properties-file on disk.\n" +
-      "path: sysEnv: '"+pathSystemEnvName+"' or default '"+defaultPath+"'.\n" +
-      "key: '"+sidKey+"'")
-
-    try{
-
-      val path = getPath
-      log.error("Using path: " + path)
-      val props = getProps( path )
-      val url = getUrl( props, sidKey )
-
-      log.error("Success resolving url '"+url+"' using fallback solution")
-
-      val sl = createFallbackSl( url )
-
-      return List(sl).toArray
-
-    }catch{
-      case e: Exception => {
-        val msg = "Error getting url using fallback solution"
-        log.error(msg, e)
-        throw new Exception(msg, e)
-      }
-    }
+  def resolveServiceLocations( ddslConfig : DdslConfig, sr : ServiceRequest) : Array[ServiceLocation] = {
+    log.info("Looking up serviceLocation '"+sr.sid+"' from configFile")
+    val sl = createFallbackSl( ddslConfig.getStaticUrls( sr.sid) )
+    List(sl).toArray
   }
 
-  protected def getServiceIdKey( sid : ServiceId) : String = {
-    //return new URLCodec().encode( sid.toString )
-    return sid.toString.replaceAll(" ", """\_""").replaceAll("""\=""", "")
-  }
-
-  def getPath : String = {
-    //TODO: Must load from env also
-    val path = System.getProperty( pathSystemEnvName)
-    return if( path != null && path.length > 0) path else {
-      log.error("system env variable named '"+pathSystemEnvName+"' does not exists. using default path: " + defaultPath)
-      defaultPath
-    }
-  }
-
-  def getProps( path : String ) : Properties = {
-    val file = new File(path)
-    if( !file.exists ) throw new Exception("File does not exists: " + path)
-    if( file.isDirectory) throw new Exception("File is directory: " + path)
 
 
-    try{
-
-      var in : InputStream = null
-      try{
-        in = new FileInputStream( file )
-        val props = new Properties
-        props.load( in )
-        return props
-      }finally{
-        //silently close it
-        try{
-         if( in != null) in.close
-        }
-      }
-
-
-    }catch{
-      case e:Exception => throw new Exception("Error loading properties file from " + path, e)
-    }
-  }
-
-  def getUrl( props : Properties, sidKey : String ) : String = {
-    val url = props.getProperty( sidKey)
-    return if( url != null ) url else {
-      throw new Exception("property with name '"+sidKey+"' not found")
-    }
-  }
-
-  def createFallbackSl( url : String) : ServiceLocation = {
-    ServiceLocation( url, "unknown", DdslDefaults.DEFAULT_QUALITY, new DateTime(), "unknown")
+  def createFallbackSl( urls : DdslUrls ) : ServiceLocation = {
+    ServiceLocation( urls.url, urls.testUrl, DdslDefaults.DEFAULT_QUALITY, new DateTime(), "unknown")
   }
 }
