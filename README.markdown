@@ -24,7 +24,7 @@ This is where DDSL helps..
 What is DDSL ?
 ------------------
 
-DDSl - Dynamic Distributed Service Locator
+DDSL - Dynamic Distributed Service Locator
 
 
 ### Dynamic ###
