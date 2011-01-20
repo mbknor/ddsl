@@ -27,21 +27,24 @@ What is DDSL ?
 DDSl - Dynamic Distributed Service Locator
 
 
-- Dynamic
--- No admin needed
--- You don't have to manually add your service / version to the repository
--- Your application can automatically register its location.
---- It can also register it's "quality" (Clients will preferred locations with better "quality"
--- Locations on "localhost" will be preferred
--- You can mix several "environments" (prod, test) within the same DDSL-repository
--- Automatically load balancing between multiple locations with same "quality"
+### Dynamic ###
 
-- Distributed
--- DDSL has no single point of failure
--- It uses ZooKeeper (https://hadoop.apache.org/zookeeper/) as its dynamic distributed storage
+- No admin needed
+- You don't have to manually add your service / version to the repository
+- Your application can automatically register its location.
+-- It can also register it's "quality" (Clients will preferred locations with better "quality"
+- Locations on "localhost" will be preferred
+- You can mix several "environments" (prod, test) within the same DDSL-repository
+- Automatically load balancing between multiple locations with same "quality"
 
-- Service Locator
--- A repository of services (with version) and their current locations
+### Distributed ###
+
+- DDSL has no single point of failure
+- It uses ZooKeeper (https://hadoop.apache.org/zookeeper/) as its dynamic distributed storage
+
+### Service Locator ###
+
+- A repository of services (with version) and their current locations
 
 
 (More information soon)
