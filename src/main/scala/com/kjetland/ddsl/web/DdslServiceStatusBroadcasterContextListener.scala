@@ -1,10 +1,10 @@
 package com.kjetland.ddsl.web
 
 import javax.servlet.http.HttpServlet
-import javax.servlet.ServletConfig
 import org.apache.log4j.Logger
 import com.kjetland.ddsl._
 import org.joda.time.DateTime
+import javax.servlet.{ServletContextEvent, ServletContextListener, ServletConfig}
 
 /**
  * Created by IntelliJ IDEA.
@@ -66,49 +66,64 @@ abstract class DdslServiceInfoProviderImpl extends DdslServiceInfoProvider {
 
   override def getService = Service( getServiceId, serviceLocation )
 
-
 }
 
 
-
-class DdslStatusBroadcasterServlet extends HttpServlet {
+trait DdslServiceBroadcaster {
 
   val log = Logger.getLogger( getClass )
 
- // val ddslConfig = new DdslConfigSysEnvReloading
-
   val ddslClient = new DdslClientImpl
-
-  val ddslServiceProvider_propertyName = "DdslServiceInfoProviderClass"
 
   var service : Service = null
 
 
-  override def init(config: ServletConfig) = {
-    service = getDdslServiceIdProvider( config ).getService
+  def serviceUp {
+    service = getDdslServiceInfoProvider.getService
 
     log.info("Marking service as UP for " + service)
     ddslClient.serviceUp( service )
 
-
   }
 
-  override def destroy = {
+  def serviceDown {
     log.info("Marking service as DOWN for " + service)
     ddslClient.serviceDown( service )
     ddslClient.disconnect
+
   }
 
+  /**
+   * Overide this one to return your prefered impl
+   */
+  def getDdslServiceInfoProvider : DdslServiceInfoProvider
 
 
-  private def getDdslServiceIdProvider( sc : ServletConfig) : DdslServiceInfoProvider = {
-    val className = sc.getInitParameter( ddslServiceProvider_propertyName )
 
-    if( className == null || className.isEmpty) throw new Exception("Missing servlet config param: " + ddslServiceProvider_propertyName)
+}
 
-    //instanicate the class
-     Class.forName( className).newInstance.asInstanceOf[DdslServiceInfoProvider]
 
+abstract class DdslServiceStatusBroadcasterContextListener extends ServletContextListener with DdslServiceBroadcaster{
+
+
+  def contextInitialized(p1: ServletContextEvent) = {
+    serviceUp
+  }
+
+  def contextDestroyed(p1: ServletContextEvent) = {
+    serviceDown
+  }
+
+}
+
+abstract class DdslStatusBroadcasterServlet extends HttpServlet with DdslServiceBroadcaster{
+
+  override def init(config: ServletConfig) = {
+    serviceUp
+  }
+
+  override def destroy = {
+    serviceDown
   }
 
 
