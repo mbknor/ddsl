@@ -114,6 +114,13 @@ abstract class DdslServiceStatusBroadcasterContextListener extends ServletContex
     serviceDown
   }
 
+  /**
+   * Overide this one to return your prefered impl
+   * included here to not confuse java ides like intellij
+   */
+  override def getDdslServiceInfoProvider : DdslServiceInfoProvider
+
+
 }
 
 abstract class DdslStatusBroadcasterServlet extends HttpServlet with DdslServiceBroadcaster{
@@ -125,6 +132,13 @@ abstract class DdslStatusBroadcasterServlet extends HttpServlet with DdslService
   override def destroy = {
     serviceDown
   }
+
+  /**
+   * Overide this one to return your prefered impl
+   * included here to not confuse java ides like intellij
+   */
+  override def getDdslServiceInfoProvider : DdslServiceInfoProvider
+  
 
 
 }
