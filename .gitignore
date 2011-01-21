@@ -1,8 +1,6 @@
-target/
-lib_managed/
-src_managed/
-project/boot/
 logs/
 .idea/
 *.iml
-out/
+ddsl-core/lib_managed/**/*
+ddsl-core/src_managed/**/*
+ddsl-core/project/boot/**/*
