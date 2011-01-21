@@ -90,7 +90,7 @@ class DdslConfigSysEnvReloading extends DdslConfig {
 
   val log = Logger.getLogger(getClass)
 
-  val envName = "DDSL_CONFIG_PATH"
+  val envName = DdslDefaults.configSystemEnvironmentName
 
   val pathToConfig = resolvePath
 

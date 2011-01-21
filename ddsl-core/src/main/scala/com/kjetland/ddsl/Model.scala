@@ -28,6 +28,8 @@ case class ServiceRequest( sid : ServiceId, cid : ClientId )
 
 object DdslDefaults{
   val DEFAULT_QUALITY = 0.0
+
+  val configSystemEnvironmentName = "DDSL_CONFIG_PATH"
 }
 
 case class DdslUrls( url : String, testUrl : String)

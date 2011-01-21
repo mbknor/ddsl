@@ -36,6 +36,7 @@ DDSL - Dynamic Distributed Service Locator
 - Locations on "localhost" will be preferred
 - You can mix several "environments" (prod, test) within the same DDSL-repository
 - Automatically load balancing between multiple locations with same "quality"
+- Service is automatically removed from repository, if it crashes/go down
 
 ### Distributed ###
 
