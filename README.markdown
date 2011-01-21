@@ -41,7 +41,7 @@ DDSL - Dynamic Distributed Service Locator
 ### Distributed ###
 
 - DDSL has no single point of failure
-- It uses ZooKeeper (https://hadoop.apache.org/zookeeper/) as its dynamic distributed storage
+- It uses [ZooKeeper](https://hadoop.apache.org/zookeeper/) as its dynamic distributed storage
 
 ### Service Locator ###
 
@@ -56,15 +56,33 @@ Have a look at the examples to see how it can be used:
 
 The example
 --------------------
-https://github.com/mbknor/ddsl/tree/master/examples/ddsl-scala-examples/src/main/scala/ddslexamples
+The source can be found [here](https://github.com/mbknor/ddsl/tree/master/examples/ddsl-scala-examples/src/main/scala/ddslexamples)
 
 To keep it as simple as possible, this example uses "telnet" as its communication-form, but it could easily be modified
-into a full blown stack of WebApps etc..
+into a full blown stack of REST/SOAP, WebApps etc..
 
 It shows the following:
 * how one or multiple clients can discover one or multiple servers and use them
-* with automatic loadbalancing.
+* with automatic load balancing.
 * you can add and remove servers and clients on the fly
+
+### Guide explaining how to run example from scratch (on max/linux) ###
+
+To follow this Guide you have to have *GIT* and [SBT](https://code.google.com/p/simple-build-tool/) installed
+
+*Download and start ZooKeeper*
+
+In our example we're only going to use one ZooKeeper node, but in production you would have several distributed around your network - no single point of failure..
+
+Clone the ddsl project from GitHub to get a local copy
+
+  git clone git@github.com:mbknor/ddsl.git
+
+Go into the folder ddsl/ddsl-core
+
+start sbt and execute *update* to download dependencies, then execute *publish-local* to build and depoly to your local ivy/sbt repo. Quit sbt
+
+
 
 
 
