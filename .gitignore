@@ -1,6 +1,12 @@
 logs/
 .idea/
 *.iml
-ddsl-core/lib_managed/**/*
-ddsl-core/src_managed/**/*
-ddsl-core/project/boot/**/*
+ddsl-core/lib_managed
+ddsl-core/src_managed
+ddsl-core/project/boot
+ddsl-core/project/build/target
+ddsl-core/project/plugins/lib_managed
+ddsl-core/project/plugins/src_managed
+ddsl-core/project/plugins/target
+ddsl-core/target
+
