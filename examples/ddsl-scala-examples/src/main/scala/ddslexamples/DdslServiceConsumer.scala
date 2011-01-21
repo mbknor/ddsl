@@ -19,7 +19,9 @@ import java.io.{BufferedReader, InputStreamReader, OutputStreamWriter, BufferedW
 object DdslServiceConsumer{
 
   def main( args : Array[String]){
-    println("Assuming sys env variable " + DdslDefaults.configSystemEnvironmentName + " points to ddsl-config-file")
+
+    //adding java property to force usage of our configfile
+    System.setProperty(DdslDefaults.configSystemEnvironmentName, "ddsl_config.properties")
 
     //Create DdslClient that connects to zookeeper-network
     val client = new DdslClientImpl

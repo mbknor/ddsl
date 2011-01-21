@@ -1,7 +1,7 @@
 package com.kjetland.ddsl.examples
 
-import com.kjetland.ddsl.DdslConfigSysEnvReloading
 import org.apache.log4j.Logger
+import com.kjetland.ddsl.{DdslDefaults, DdslConfigSysEnvReloading}
 
 /**
  * Created by IntelliJ IDEA.
@@ -24,6 +24,8 @@ object DdslConfigEnvLoaderMain{
   }
 
   def doStuff{
+
+    //System.setProperty(DdslDefaults.configSystemEnvironmentName, "ddsl_config.properties")
 
     val config = new DdslConfigSysEnvReloading
 
