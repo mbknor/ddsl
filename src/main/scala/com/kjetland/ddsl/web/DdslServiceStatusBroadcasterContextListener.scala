@@ -44,7 +44,7 @@ trait DdslServiceInfoProvider {
 /**
  * Resolves Urls from sys env config and gets ServiceId supplied
  */
-abstract class DdslServiceInfoProviderImpl extends DdslServiceInfoProvider {
+class DdslServiceInfoProviderImpl(val serviceId : ServiceId) extends DdslServiceInfoProvider {
 
   val serviceLocation = resolveServiceLocation
 
@@ -53,18 +53,13 @@ abstract class DdslServiceInfoProviderImpl extends DdslServiceInfoProvider {
    */
   private def resolveServiceLocation : ServiceLocation = {
     val config = new DdslConfigSysEnvReloading
-    val urls = config.getStaticUrls( getServiceId )
+    val urls = config.getStaticUrls( serviceId )
 
     ServiceLocation( urls.url, urls.testUrl, DdslDefaults.DEFAULT_QUALITY, new DateTime(), null)
 
   }
 
-  /**
-   * This must be overrided to return correect ServiceId
-   */
-  def getServiceId : ServiceId
-
-  override def getService = Service( getServiceId, serviceLocation )
+  override def getService = Service( serviceId, serviceLocation )
 
 }
 
