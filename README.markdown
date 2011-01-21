@@ -47,5 +47,27 @@ DDSL - Dynamic Distributed Service Locator
 
 - A repository of services (with version) and their current locations
 
+How to use DDSL?
+====================
+
+The idea behind DDSL is really simple and dynamic / flexible - So is its usage.
+
+Have a look at the examples to see how it can be used:
+
+The example
+--------------------
+https://github.com/mbknor/ddsl/tree/master/examples/ddsl-scala-examples/src/main/scala/ddslexamples
+
+To keep it as simple as possible, this example uses "telnet" as its communication-form, but it could easily be modified
+into a full blown stack of WebApps etc..
+
+It shows the following:
+* how one or multiple clients can discover one or multiple servers and use them
+* with automatic loadbalancing.
+* you can add and remove servers and clients on the fly
+
+
+
+  
 
 (More information soon)
