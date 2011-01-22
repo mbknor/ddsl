@@ -9,7 +9,7 @@ Where does DDSL help?
 
 In many big companies you have a lot of services (SOAP, REST, etc) spread across many servers on 
 several different Web Containers/Application Servers/ESB (Weblogic, Glassfish, Tomcat, Jetty, Mule, etc).
-At least this is the situation where I work. You also have different environment:
+At least this is the situation where I work. You also have several different environments:
 test, preprod, prod etc with different servers and databases etc.
 
 One service might use several other services.
@@ -62,9 +62,10 @@ To keep it as simple as possible, this example uses "telnet" as its communicatio
 into a full blown stack of REST/SOAP, WebApps etc..
 
 It shows the following:
-* how one or multiple clients can discover one or multiple servers and use them
-* with automatic load balancing.
-* you can add and remove servers and clients on the fly
+
+- how one or multiple clients can discover one or multiple servers and use them
+- with automatic load balancing.
+- you can add and remove servers and clients on the fly
 
 ### Guide explaining how to run example from scratch (on max/linux) ###
 
