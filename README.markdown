@@ -67,7 +67,7 @@ It shows the following:
 - with automatic load balancing.
 - you can add and remove servers and clients on the fly
 
-### Guide explaining how to run example from scratch (on max/linux) ###
+### Guide explaining how to run example from scratch (on Mac/linux) ###
 
 To follow this Guide you have to have *GIT* and [SBT](https://code.google.com/p/simple-build-tool/) installed
 
@@ -77,7 +77,7 @@ In our example we're only going to use one ZooKeeper node, but in production you
 
 Clone the ddsl project from GitHub to get a local copy
 
-  git clone git@github.com:mbknor/ddsl.git
+	git clone git@github.com:mbknor/ddsl.git
 
 Go into the folder ddsl/ddsl-core
 
