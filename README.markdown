@@ -82,10 +82,25 @@ Go into the folder ddsl/ddsl-core
 
 start sbt and execute *update* to download dependencies, then execute *publish-local* to build and depoly to your local ivy/sbt repo. Quit sbt
 
+Go into the folder ddsl/examples/ddsl-scala-examples
 
+start sbt and execute *update* and *compile*
 
+We are now ready to start the first server:
 
+in sbt, execute *run* and select *ddslexamples.DdslServiceProvider*
 
-  
+The server starts up, picks a random port and starts listening on it. then it broadcasts its location to ddsl.
+
+To set up a client, just open a new terminal, go to the folder ddsl/examples/ddsl-scala-examples, start *sbt* and execute *run*, then select ddslexamples.DdslServiceConsumer
+
+Now you can see them communicating
+
+Now, open a new terminal and starts another server.. You will see that the client automatically starts to use both servers..
+
+Then add some more clients, and servers, take some down... etc....
+
+**Note:** If no server for a specific ServiceID is pressent in ddsl, the client will try to load location info from a file. Since this file is missing in this example the client will fail getting a location and will quit.
+
 
 (More information soon)
