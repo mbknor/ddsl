@@ -11,7 +11,7 @@ import com.kjetland.ddsl.{DdslDefaults, DdslConfigSysEnvReloading}
  * To change this template use File | Settings | File Templates.
  */
 
-object DdslConfigEnvLoaderMain{
+object DdslConfigEnvLoaderMain extends ExampleLogging{
 
 
   def main(args : Array[String]){

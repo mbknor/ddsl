@@ -20,4 +20,6 @@ examples/ddsl-scala-examples/project/plugins/target
 examples/ddsl-scala-examples/target
 examples/ddsl-scala-examples/out
 
+ddsl.log
+ddsl.log.*
 

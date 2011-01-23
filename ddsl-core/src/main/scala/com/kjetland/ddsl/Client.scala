@@ -14,13 +14,21 @@ import collection.mutable.HashMap
  */
 
 
+class DdslClientException(cause: Throwable) extends RuntimeException(cause) {
+
+}
+
+
 trait DdslClient {
 
   def serviceUp( s : Service) : Boolean
   def serviceDown( s : Service ) : Boolean
+
+  //@throws(classOf[Exception])
   def getServiceLocations(sr : ServiceRequest) : Array[ServiceLocation]
   def disconnect()
 
+  //@throws(classOf[Exception])
   def getBestServiceLocation(sr : ServiceRequest) : ServiceLocation = {
     getServiceLocations(sr)(0)//should always at least contain one element - pick the first/best one
 

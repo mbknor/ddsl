@@ -12,7 +12,7 @@ import com.kjetland.ddsl._
  * To change this template use File | Settings | File Templates.
  */
 
-object DdslClientImplMain{
+object DdslClientImplMain extends ExampleLogging{
 
   def main(args : Array[String]){
     val log = Logger.getLogger(getClass)
