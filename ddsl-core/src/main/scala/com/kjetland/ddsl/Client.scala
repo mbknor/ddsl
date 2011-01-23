@@ -22,17 +22,57 @@ import com.kjetland.ddsl.optimizing.SlListOptimizer
 //TODO: create option to "late-publish" servliceLocation if it fails initially
 
 
-
-
+/**
+ * Trait describing the interface to the DdslClient. This client is used by both servers
+ * broadcasting that they are available and by clients asking for particular services.
+ *
+ * It is best practice to call disconnect() when shuting down, undeployting or in som way "removing"
+ * the client..
+ */
 trait DdslClient {
 
+  /**
+   * Tells DDSL that your service is up.. It will stay as UP forever or until you call
+   * serviceDown, disconnect, or until your app quit
+   *
+   * Returns true if success
+   */
   def serviceUp( s : Service) : Boolean
+
+  /**
+   * You can use this method to remove your service from DDSL. This will automatically happen if
+   * you use disconnect ot just quit your app.
+   */
   def serviceDown( s : Service ) : Boolean
 
+  /**
+   *
+   * Clients would probably use the method getBestServiceLocation() instead of this one.
+   *
+   * Returns the list of all available locations where the service being asked for can be found
+   * just now. The returned list is sorted, with the best location for your client first..
+   * The list is sorted by quality. Locations with equal quality is randomized - so you would automatically
+   * get  distributed load if you have several instances of your service running at the same time.
+   * Services running on the same host as the asking client will be preferred.
+   * 
+   *
+   * If available locations is found, an NoDDSLServiceLocationFoundException is thrown
+   *
+   */
   @throws(classOf[NoDDSLServiceLocationFoundException])
   def getServiceLocations(sr : ServiceRequest) : Array[ServiceLocation]
-  def disconnect()
 
+
+  /**
+   * This method return just one locatiion for the service beeing asked for.
+   * It return the one best locations. The best location is the first element in the list
+   * returned from the method getServiceLocations.
+   *
+   * Have a look at the documentation for getServiceLocations() to get more info.
+   *
+   * If available locations is found, an NoDDSLServiceLocationFoundException is thrown
+   *
+   */
   @throws(classOf[NoDDSLServiceLocationFoundException])
   def getBestServiceLocation(sr : ServiceRequest) : ServiceLocation = {
     val sls = getServiceLocations(sr)
@@ -45,14 +85,35 @@ trait DdslClient {
   }
 
 
+  /**
+   * Call this method to disconnect yhe client from DDSL. When you do this
+   * All services added by serviceUp() will be removed from DDSL. This also happens if your
+   * program quits.
+   *
+   * If you undeploy your app or quit gracefully, it is best practice to call disconnect
+   */
+  def disconnect()
+
+
+
 }
 
 
-
-
+/**
+ *This is the main DdslClient-implementation. It uses ZooKeeper to store the information about which services is
+ * up. The information is stored distributed in ZooKeeper.
+ *
+ * Have a look at [[com.kjetland.ddsl.DdslClient]] for mor information
+ *
+ *
+ * When asking for locations, DdslClientImpl will fallback to try to use [[com.kjetland.ddsl.DdslClientOnlyFallbackImpl]] if DDSL/ZooKeeper is down, or if
+ * no available location can be found on DDSL.
+ */
 class DdslClientImpl( config : DdslConfig) extends DdslClient{
 
-  //default config is sys env
+  /**
+   * When using this default constructor, it uses [[com.kjetland.ddsl.config.DdslConfigSysEnvReloading]] to configure.
+   */
   def this() = this( new DdslConfigSysEnvReloading )
 
   private val log = Logger.getLogger( getClass )
@@ -111,7 +172,6 @@ class DdslClientImpl( config : DdslConfig) extends DdslClient{
     }
 
   }
-
 
 
   @throws(classOf[NoDDSLServiceLocationFoundException])
@@ -205,7 +265,7 @@ class DdslClientOnlyFallbackImpl( ddslConfig : DdslConfig) extends DdslClient {
 /**
  * This is a cache that caches read results for some time..
  * Convenient to use when you don't want to lookup serviceLocation
- * all the time put Don't want to mess with when to refresh serviceLocations
+ * all the time but Don't want to mess with when to refresh serviceLocations
  */
 class DdslClientCacheReadsImpl( realClient : DdslClient, ttl_mills : Long) extends DdslClient {
 
