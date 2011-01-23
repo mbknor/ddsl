@@ -1,6 +1,9 @@
 DDSL - Dynamic Distributed Service Locator
 ===================
 
+DDSL is written in Scala and can be used by Scala, Java or any other Language on the JVM
+
+
 (This is work in progress)
 
 
@@ -25,6 +28,8 @@ What is DDSL ?
 ------------------
 
 DDSL - Dynamic Distributed Service Locator
+
+(Scaladoc can be found [here](http://mbknor.github.com/ddsl-scaladoc/))
 
 
 ### Dynamic ###
@@ -51,6 +56,30 @@ How to use DDSL?
 ====================
 
 The idea behind DDSL is really simple and dynamic / flexible - So is its usage.
+
+API documentation can be found [here](http://mbknor.github.com/ddsl-scaladoc/)
+
+Below you can find a simple and running example but first some highlights. 
+
+Both servers and clients uses [DdslClient](http://mbknor.github.com/ddsl-scaladoc/com/kjetland/ddsl/DdslClient.html) to communicate with DDSL.
+The client is created like this:
+
+	val client = new DdslClientImpl
+	
+When a service wants to broadcast that it is available, this is how it is done:
+
+	client.serviceUp( Service( serviceId, serviceLocation))
+
+[ServiceId](http://mbknor.github.com/ddsl-scaladoc/com/kjetland/ddsl/model/ServiceId.html) specifies what kind of service it is, 
+and [serviceLocation](http://mbknor.github.com/ddsl-scaladoc/com/kjetland/ddsl/model/ServiceLocation.html) specifies how clients can reach us.
+
+When a client wants to get the best location of a specific service:
+
+	val location = client.getBestServiceLocation( ServiceRequest(serviceId, clientId ))
+	
+It specifies the [ServiceId](http://mbknor.github.com/ddsl-scaladoc/com/kjetland/ddsl/model/ServiceId.html) describing what service it needs, and
+[ClientId](http://mbknor.github.com/ddsl-scaladoc/com/kjetland/ddsl/model/ClientId.html) so DDSL can log which client is using which services.
+
 
 Have a look at the examples to see how it can be used:
 
