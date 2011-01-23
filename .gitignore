@@ -22,4 +22,5 @@ examples/ddsl-scala-examples/out
 
 ddsl.log
 ddsl.log.*
+out
 
