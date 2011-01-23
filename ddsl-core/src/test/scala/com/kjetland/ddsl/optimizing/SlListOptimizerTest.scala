@@ -1,10 +1,11 @@
-package com.kjetland.ddsl
+package com.kjetland.ddsl.optimizing
 
 import org.scalatest.junit.{JUnitSuite, AssertionsForJUnit}
 import org.junit.Test
 import org.junit.Assert._
 import org.joda.time.DateTime
 import collection.mutable.ListBuffer
+import com.kjetland.ddsl.model._
 
 /**
  * Created by IntelliJ IDEA.

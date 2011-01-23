@@ -1,9 +1,10 @@
-package com.kjetland.ddsl
+package com.kjetland.ddsl.config
 
 import org.apache.log4j.Logger
 import collection.immutable.HashMap
 import java.util.Properties
 import java.io.{FileInputStream, File}
+import com.kjetland.ddsl.model._
 
 /**
  * Created by IntelliJ IDEA.

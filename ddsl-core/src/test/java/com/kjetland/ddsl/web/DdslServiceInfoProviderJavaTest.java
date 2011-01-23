@@ -1,6 +1,6 @@
 package com.kjetland.ddsl.web;
 
-import com.kjetland.ddsl.ServiceId;
+import com.kjetland.ddsl.model.ServiceId;
 import org.junit.Assert;
 import org.junit.Test;
 

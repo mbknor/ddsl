@@ -1,4 +1,4 @@
-package com.kjetland.ddsl
+package com.kjetland.ddsl.model
 
 import org.joda.time.DateTime
 

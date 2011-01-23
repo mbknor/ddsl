@@ -3,6 +3,7 @@ package ddslexamples
 import com.kjetland.ddsl._
 import java.net.Socket
 import java.io.{BufferedReader, InputStreamReader, OutputStreamWriter, BufferedWriter}
+import com.kjetland.ddsl.model._
 
 /**
  * Created by IntelliJ IDEA.

@@ -1,7 +1,8 @@
 package com.kjetland.ddsl.examples
 
 import org.apache.log4j.Logger
-import com.kjetland.ddsl.{DdslDefaults, DdslConfigSysEnvReloading}
+import com.kjetland.ddsl.model._
+import com.kjetland.ddsl.config._
 
 /**
  * Created by IntelliJ IDEA.

@@ -5,6 +5,7 @@ import java.net.ServerSocket
 import com.kjetland.ddsl._
 import org.joda.time.DateTime
 import java.io.{InputStreamReader, BufferedReader, BufferedWriter, OutputStreamWriter}
+import com.kjetland.ddsl.model._
 
 /**
  * Created by IntelliJ IDEA.

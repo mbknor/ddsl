@@ -1,9 +1,14 @@
 package com.kjetland.ddsl
 
+import exceptions.NoDDSLServiceLocationFoundException
 import org.apache.log4j.Logger
 import java.net.InetAddress
 import org.joda.time.DateTime
 import collection.mutable.HashMap
+import com.kjetland.ddsl.model._
+import com.kjetland.ddsl.config._
+import com.kjetland.ddsl.dao._
+import com.kjetland.ddsl.optimizing.SlListOptimizer
 
 /**
  * Created by IntelliJ IDEA.
@@ -14,17 +19,9 @@ import collection.mutable.HashMap
  */
 
 
-/**
- * Exception thrown if DDSL not was able to find any ServiceLocations for
- * the service beeing asked for
- */
-class NoDDSLServiceLocationFoundException(msg : String, cause: Throwable) extends RuntimeException(msg, cause) {
+//TODO: create option to "late-publish" servliceLocation if it fails initially
 
-  def this( cause : Throwable) = this(null, cause)
-  def this( msg : String) = this(msg, null)
-  def this() = this(null, null)
 
-}
 
 
 trait DdslClient {

@@ -1,9 +1,10 @@
-package com.kjetland.ddsl
+package com.kjetland.ddsl.dao
 
 import org.scalatest.junit.{AssertionsForJUnit, JUnitSuite}
 import org.junit.Test
 import org.junit.Assert._
 import org.joda.time.DateTime
+import com.kjetland.ddsl.model._
 
 /**
  * Created by IntelliJ IDEA.

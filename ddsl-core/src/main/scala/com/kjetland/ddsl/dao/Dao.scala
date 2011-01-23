@@ -1,4 +1,4 @@
-package com.kjetland.ddsl
+package com.kjetland.ddsl.dao
 
 import org.joda.time.DateTime
 import org.apache.log4j.Logger
@@ -10,6 +10,7 @@ import java.io.{ByteArrayInputStream, ByteArrayOutputStream}
 import org.apache.commons.codec.net.URLCodec
 import org.apache.zookeeper.data.Stat
 import scala.collection.JavaConversions._
+import com.kjetland.ddsl.model._
 
 /**
  * Created by IntelliJ IDEA.

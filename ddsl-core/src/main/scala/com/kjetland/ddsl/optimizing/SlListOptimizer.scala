@@ -1,7 +1,8 @@
-package com.kjetland.ddsl
+package com.kjetland.ddsl.optimizing
 
 import collection.mutable.{ListBuffer, HashMap}
 import java.util.Random
+import com.kjetland.ddsl.model._
 
 /**
  * Created by IntelliJ IDEA.

@@ -1,5 +1,7 @@
 package com.kjetland.ddsl
 
+import config.DdslConfigManualImpl
+import model.{DdslUrls, ClientId, ServiceRequest, ServiceId}
 import org.scalatest.junit.{AssertionsForJUnit, JUnitSuite}
 import org.junit.Assert._
 import org.junit.{After, Before, Test}

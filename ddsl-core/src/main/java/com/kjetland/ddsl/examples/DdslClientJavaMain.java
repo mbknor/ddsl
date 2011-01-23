@@ -1,6 +1,9 @@
 package com.kjetland.ddsl.examples;
 
 import com.kjetland.ddsl.*;
+import com.kjetland.ddsl.config.DdslConfig;
+import com.kjetland.ddsl.config.DdslConfigManualImpl;
+import com.kjetland.ddsl.model.*;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 
