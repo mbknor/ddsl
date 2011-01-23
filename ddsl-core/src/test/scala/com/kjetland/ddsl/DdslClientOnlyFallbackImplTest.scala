@@ -7,12 +7,12 @@ import org.junit.{After, Before, Test}
 /**
  * Created by IntelliJ IDEA.
  * User: mortenkjetland
- * Date: 1/17/11
- * Time: 1:13 PM
+ * Date: 1/23/11
+ * Time: 11:03 AM
  * To change this template use File | Settings | File Templates.
  */
 
-class FallbackClientTest extends AssertionsForJUnit with JUnitSuite{
+class DdslClientOnlyFallbackImplTest extends AssertionsForJUnit with JUnitSuite{
 
   @Test def verifyResolveServiceLocations{
 
@@ -25,8 +25,8 @@ class FallbackClientTest extends AssertionsForJUnit with JUnitSuite{
     val config = new DdslConfigManualImpl( "hostList", Map[ServiceId, DdslUrls]( sid -> url))
 
 
-    val srs = FallbackClient.resolveServiceLocations( config, sr )
-    
+    val srs = new DdslClientOnlyFallbackImpl(config).getServiceLocations(sr )
+
     assertEquals( 1, srs.size)
     assertEquals( url.url, srs(0).url)
     assertEquals( url.testUrl, srs(0).testUrl)

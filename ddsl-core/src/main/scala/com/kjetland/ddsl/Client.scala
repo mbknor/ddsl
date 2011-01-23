@@ -14,7 +14,15 @@ import collection.mutable.HashMap
  */
 
 
-class DdslClientException(cause: Throwable) extends RuntimeException(cause) {
+/**
+ * Exception thrown if DDSL not was able to find any ServiceLocations for
+ * the service beeing asked for
+ */
+class NoDDSLServiceLocationFoundException(msg : String, cause: Throwable) extends RuntimeException(msg, cause) {
+
+  def this( cause : Throwable) = this(null, cause)
+  def this( msg : String) = this(msg, null)
+  def this() = this(null, null)
 
 }
 
@@ -24,13 +32,18 @@ trait DdslClient {
   def serviceUp( s : Service) : Boolean
   def serviceDown( s : Service ) : Boolean
 
-  //@throws(classOf[Exception])
+  @throws(classOf[NoDDSLServiceLocationFoundException])
   def getServiceLocations(sr : ServiceRequest) : Array[ServiceLocation]
   def disconnect()
 
-  //@throws(classOf[Exception])
+  @throws(classOf[NoDDSLServiceLocationFoundException])
   def getBestServiceLocation(sr : ServiceRequest) : ServiceLocation = {
-    getServiceLocations(sr)(0)//should always at least contain one element - pick the first/best one
+    val sls = getServiceLocations(sr)
+
+    if( sls.isEmpty ) throw new NoDDSLServiceLocationFoundException
+    
+    //return the best sl on the top of the list
+    sls(0)//should always at least contain one element - pick the first/best one
 
   }
 
@@ -104,7 +117,7 @@ class DdslClientImpl( config : DdslConfig) extends DdslClient{
 
 
 
-
+  @throws(classOf[NoDDSLServiceLocationFoundException])
   override def getServiceLocations(sr : ServiceRequest) : Array[ServiceLocation] = {
     try{
       log.info("Client "+sr.cid+" asking for Service "+sr.sid)
@@ -116,13 +129,13 @@ class DdslClientImpl( config : DdslConfig) extends DdslClient{
 
       val fixedSls = SlListOptimizer.optimize( clientIp, sls)
 
-      if( fixedSls.size == 0) throw new Exception("ZooKeeper works ok - but no available serviceLocation found")
+      if( fixedSls.size == 0) throw new NoDDSLServiceLocationFoundException("ZooKeeper works ok - but no available serviceLocation found")
 
       return fixedSls
     }catch{
       case e: Exception => {
         log.error("Error resolving ServiceLocations for '"+sr+"'. trying fallbacksollution.", e)
-        return FallbackClient.resolveServiceLocations( config, sr )
+        return new DdslClientOnlyFallbackImpl(config).getServiceLocations( sr )
       }
     }
   }
@@ -141,8 +154,19 @@ class DdslClientImpl( config : DdslConfig) extends DdslClient{
 
 }
 
-
-class DdslClientOnlyFallbackImpl( config : DdslConfig) extends DdslClient {
+/**
+ * Since we migt have a situation where our ddsl / zookeeper solution is broken or down
+ * we have to have a solution where we can override it.
+ *
+ * This FallbackClient gets a path from sys env, then tries to load that property file.
+ * then tries to look up the requested sid from this file. if success, this url is returned.
+ *
+ * It's critical that this FallbackClient impl logs a lot about what it is looking for (and possible using).
+ *
+ * This makes it possible, in an error situation, to look at the client logfile and see what to do, to update
+ * the fallback info to make(hack) the system to work again...
+ */
+class DdslClientOnlyFallbackImpl( ddslConfig : DdslConfig) extends DdslClient {
 
   private val log = Logger.getLogger(getClass)
 
@@ -156,11 +180,27 @@ class DdslClientOnlyFallbackImpl( config : DdslConfig) extends DdslClient {
     false
   }
 
+  @throws(classOf[NoDDSLServiceLocationFoundException])
   override def getServiceLocations(sr : ServiceRequest) : Array[ServiceLocation] = {
-    FallbackClient.resolveServiceLocations( config, sr )
+    log.info("Looking up serviceLocation '"+sr.sid+"' in configFile")
+
+    try{
+      val sl = createFallbackSl( ddslConfig.getStaticUrls( sr.sid) )
+      List(sl).toArray
+    }catch{
+      case e:Exception => {
+        throw new NoDDSLServiceLocationFoundException("Failed to find serviceLocation for " + sr + " using fallback impl", e)
+      }
+    }
   }
 
   override def disconnect() = {}//nothing to do
+
+
+  private def createFallbackSl( urls : DdslUrls ) : ServiceLocation = {
+    ServiceLocation( urls.url, urls.testUrl, DdslDefaults.DEFAULT_QUALITY, new DateTime(), "unknown")
+  }
+
 
 }
 
@@ -183,8 +223,10 @@ class DdslClientCacheReadsImpl( realClient : DdslClient, ttl_mills : Long) exten
 
   override def serviceDown( s : Service ) : Boolean = realClient.serviceDown( s )
 
+  @throws(classOf[NoDDSLServiceLocationFoundException])
   override def getServiceLocations(sr : ServiceRequest) : Array[ServiceLocation] = realClient.getServiceLocations( sr)
 
+  @throws(classOf[NoDDSLServiceLocationFoundException])
   override def getBestServiceLocation(sr : ServiceRequest) : ServiceLocation = {
     checkAndInvalidateCache
 
