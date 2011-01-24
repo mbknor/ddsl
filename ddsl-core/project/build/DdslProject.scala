@@ -25,5 +25,5 @@ class DdslProject(info: ProjectInfo) extends DefaultProject(info) with IdeaProje
 
   val codec = "commons-codec" % "commons-codec" % "1.4"
 
-  val servlet = "javax.servlet" % "servlet-api" % "2.5" % "provided"
+  
 }
