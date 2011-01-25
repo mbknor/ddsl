@@ -108,10 +108,6 @@ Clone the ddsl project from GitHub to get a local copy
 
 	git clone git@github.com:mbknor/ddsl.git
 
-Go into the folder ddsl/ddsl-core
-
-start sbt and execute *update* to download dependencies, then execute *publish-local* to build and depoly to your local ivy/sbt repo. Quit sbt
-
 Go into the folder ddsl/examples/ddsl-scala-examples
 
 start sbt and execute *update* and *compile*
