@@ -1,0 +1,54 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.cedarsoft</groupId>
+    <artifactId>open</artifactId>
+    <version>4.0.2</version>
+  </parent>
+
+  <groupId>com.kjetland.ddsl</groupId>
+  <artifactId>ddsl-java-examples</artifactId>
+  <version>0.1-SNAPSHOT</version>
+
+  <scm>
+    <connection>scm:git:git://git.cedarsoft.com/com.kjetland.ddsl.ddsl-java-examples</connection>
+    <developerConnection>scm:git:ssh://git.cedarsoft.com/home/git/com.kjetland.ddsl.ddsl-java-examples</developerConnection>
+  </scm>
+
+  <dependencies>
+    <!--Guava-->
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+    </dependency>
+
+    <!--NotNull Annotations-->
+    <dependency>
+      <groupId>com.intellij</groupId>
+      <artifactId>annotations</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
+    <!--Test Dependencies-->
+    <dependency>
+      <groupId>com.cedarsoft.commons</groupId>
+      <artifactId>test-utils</artifactId>
+      <version>3.0.0</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+    </dependency>
+  </dependencies>
+
+  <mailingLists>
+    <mailingList>
+      <name>Mail Support</name>
+      <post>info@cedarsoft.com</post>
+    </mailingList>
+  </mailingLists>
+
+</project>

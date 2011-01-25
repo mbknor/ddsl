@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<!--
+
+    Copyright (C) cedarsoft GmbH.
+
+    Licensed under the GNU General Public License version 3 (the "License")
+    with Classpath Exception; you may not use this file except in compliance
+    with the License. You may obtain a copy of the License at
+
+            http://www.cedarsoft.org/gpl3ce
+            (GPL 3 with Classpath Exception)
+
+    This code is free software; you can redistribute it and/or modify it
+    under the terms of the GNU General Public License version 3 only, as
+    published by the Free Software Foundation. cedarsoft GmbH designates this
+    particular file as subject to the "Classpath" exception as provided
+    by cedarsoft GmbH in the LICENSE file that accompanied this code.
+
+    This code is distributed in the hope that it will be useful, but WITHOUT
+    ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+    FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+    version 3 for more details (a copy is included in the LICENSE file that
+    accompanied this code).
+
+    You should have received a copy of the GNU General Public License version
+    3 along with this work; if not, write to the Free Software Foundation,
+    Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
+
+    Please contact cedarsoft GmbH, 72810 Gomaringen, Germany,
+    or visit www.cedarsoft.com if you need additional information or
+    have any questions.
+
+-->
+
+<faqs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/FML/1.0"
+      xsi:schemaLocation="http://maven.apache.org/FML/1.0 http://maven.apache.org/xsd/fml-1.0.xsd"
+      id="General FAQ">
+  <part id="General">
+    <faq id="where">
+      <question>Where did Maven come from?</question>
+      <answer>
+        <p>
+          Maven was created by a group of software developers who were tired
+          of wasting their time fiddling around with builds and wanted to get
+          down to brass tacks and actually develop software!
+        </p>
+      </answer>
+    </faq>
+    <faq id="why">
+      <question>Why is Maven so wildly popular?</question>
+      <answer>
+        <p>
+          Maven saves you so much time in your software development efforts that
+          you will have time to learn a second language, relax ten hours a
+          day, and train for that marathon you've always wanted to run!
+        </p>
+      </answer>
+    </faq>
+  </part>
+</faqs>
