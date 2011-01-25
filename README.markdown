@@ -56,9 +56,9 @@ DDSL - Dynamic Distributed Service Locator
 - A repository of services (with version) and their current locations
 
 
-=== Coming functionality ===
+### Coming functionality ###
 
-==== Distributed logging ====
+#### Distributed logging ####
 
 Distributed logging will have no single point of failure and will make it possible to
 look up which client is using / depending on which service...
