@@ -110,14 +110,15 @@ class ZDao (val hosts : String) extends Dao with Watcher {
 
     val statusPath = getSLInstancePath( path, s.sl)
 
-    log.info("Writing status to path: " + statusPath)
+    log.debug("Writing status to path: " + statusPath)
 
 
     //just check if it exsists - if it does delete it, then insert it.
 
+    //TODO: is it possible to update instead of delete/create?
     val stat = client.exists( statusPath, false)
     if( stat != null ){
-      log.info("statusnode exists - delete it before creating it")
+      log.debug("statusnode exists - delete it before creating it")
       try{
         client.delete(statusPath, stat.getVersion)
       }catch{
@@ -125,7 +126,7 @@ class ZDao (val hosts : String) extends Dao with Watcher {
       }
     }
 
-    log.info("status: " + infoString)
+    log.debug("status: " + infoString)
     
 
     client.create( statusPath, infoString.getBytes("utf-8"), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL )
@@ -136,10 +137,10 @@ class ZDao (val hosts : String) extends Dao with Watcher {
     val path = getSidPath(s.id)
     val statusPath = getSLInstancePath( path, s.sl)
 
-    log.info("trying to delete path: " + statusPath)
+    log.debug("trying to delete path: " + statusPath)
     val stat = client.exists( statusPath, false)
     if( stat != null ){
-      log.info("Deleting path: " + statusPath)
+      log.debug("Deleting path: " + statusPath)
       try{
         client.delete( statusPath, stat.getVersion)
       }catch{

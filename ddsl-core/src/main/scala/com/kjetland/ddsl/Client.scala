@@ -228,18 +228,18 @@ class DdslClientOnlyFallbackImpl( ddslConfig : DdslConfig) extends DdslClient {
   private val log = Logger.getLogger(getClass)
 
   override def serviceUp( s : Service) : Boolean = {
-    log.info("Ignoring serviceUp: " + s)
+    log.warn("Ignoring serviceUp: " + s)
     false
   }
 
   override def serviceDown( s : Service ) : Boolean = {
-    log.info("Ignoring serviceDown: " + s)
+    log.warn("Ignoring serviceDown: " + s)
     false
   }
 
   @throws(classOf[NoDDSLServiceLocationFoundException])
   override def getServiceLocations(sr : ServiceRequest) : Array[ServiceLocation] = {
-    log.info("Looking up serviceLocation '"+sr.sid+"' in configFile")
+    log.warn("Looking up serviceLocation '"+sr.sid+"' in configFile")
 
     try{
       val sl = createFallbackSl( ddslConfig.getStaticUrls( sr.sid) )
@@ -292,13 +292,13 @@ class DdslClientCacheReadsImpl( realClient : DdslClient, ttl_mills : Long) exten
 
     cache.get( key ) match {
       case Some(sl : ServiceLocation) => {
-        log.debug("Returning cached result for " + sr + ": " + sl)
+        log.info("Returning cached result for " + sr + ": " + sl)
         sl
       }
       case None => {
         log.debug( "Querying real sl for " + sr)
         val sl = realClient.getBestServiceLocation( sr )
-        log.debug( "Got real sl for " + sr + ": " + sl)
+        log.info( "Got real sl for " + sr + ": " + sl)
         sl
 
       }
@@ -309,7 +309,7 @@ class DdslClientCacheReadsImpl( realClient : DdslClient, ttl_mills : Long) exten
     val now = System.currentTimeMillis
     val millsSinceLastCacheClear = now - lastCacheClear
     if( millsSinceLastCacheClear > ttl_mills ){
-      log.info("Clearing cache")
+      log.debug("Clearing cache")
       cache.clear
       lastCacheClear = System.currentTimeMillis
     }
