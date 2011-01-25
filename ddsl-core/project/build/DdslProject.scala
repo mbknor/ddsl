@@ -2,10 +2,29 @@ import sbt._
 
 class DdslProject(info: ProjectInfo) extends DefaultProject(info) with IdeaProject
 {
+
+  //publishing info
+
+  override def managedStyle = ManagedStyle.Maven
+
+  val publishTo = Resolver.ssh("my local mbknor repo", "localhost", "~/projects/mbknor.github.com/m2repo/releases/")
+
+  //
+
+  Resolver.userMavenRoot
+
+  //include doc and source in publish
+  override def packageDocsJar = defaultJarPath("-javadoc.jar")
+  override def packageSrcJar= defaultJarPath("-sources.jar")
+  val sourceArtifact = Artifact.sources(artifactID)
+  val docsArtifact = Artifact.javadoc(artifactID)
+  override def packageToPublishActions = super.packageToPublishActions ++ Seq(packageDocs, packageSrc)
+
+
+  //dependencies
+
+
 	val scalaSnapshotRepo = "scala snapshot" at "http://scala-tools.org/repo-snapshots/"
-
-
-  //val mongo = "org.mongodb" % "mongo-java-driver" % "2.3"
 
   val zooKeeper = "org.apache.zookeeper" % "zookeeper" % "3.3.2"
 

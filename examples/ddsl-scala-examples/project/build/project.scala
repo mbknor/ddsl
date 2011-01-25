@@ -5,5 +5,6 @@ class DdslScalaExamplesProject(info: ProjectInfo) extends DefaultProject(info) w
 	val scalaSnapshotRepo = "scala snapshot" at "http://scala-tools.org/repo-snapshots/"
 
 
-  val ddsl = "com.kjetland" % "ddsl_2.8.1" % "0.1"
+  //TODO: must make sure we use the same version here as in core
+  val ddsl = "com.kjetland.ddsl" % "ddsl_2.8.1" % "0.1-RC1"
 }
