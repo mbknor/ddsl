@@ -19,6 +19,7 @@ class Project(info: ProjectInfo) extends DefaultProject(info) with IdeaProject
 
 
   val scalaSnapshotRepo = "scala snapshot" at "http://scala-tools.org/repo-snapshots/"
+  val mbknorRepo = "mbknor repo" at "http://mbknor.github.com/m2repo/releases"
 
   val ddsl = "com.kjetland.ddsl" % "ddsl_2.8.1" % "0.1-RC1"
   val wc_info_e = "com.kjetland"% "webcontainer-info-extractor_2.8.1" % "1.0"
