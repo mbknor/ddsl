@@ -9,7 +9,7 @@ class DdslScalaExamplesProject(info: ProjectInfo) extends DefaultProject(info) w
 
   //TODO: must make sure we use the same version here as in core
   val mbknorRepo = "mbknor repo" at "http://mbknor.github.com/m2repo/releases"
-  val ddsl = "com.kjetland.ddsl" % "ddsl_2.8.1" % "0.1-RC1"
+  val ddsl = "com.kjetland.ddsl" % "ddsl_2.8.1" % "0.2"
 
 
 

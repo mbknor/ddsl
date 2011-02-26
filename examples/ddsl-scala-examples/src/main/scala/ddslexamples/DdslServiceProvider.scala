@@ -39,7 +39,7 @@ object DdslServiceProvider{
     println("Going to listen on port " + port)
 
     //prepare our location
-    val ourLocation = ServiceLocation( "telnet://localhost:"+port, "", 0.0, new DateTime(), null)
+    val ourLocation = ServiceLocation( "telnet://localhost:"+port, 0.0, new DateTime(), null)
 
     val listenSocket = new ServerSocket( port )
 
