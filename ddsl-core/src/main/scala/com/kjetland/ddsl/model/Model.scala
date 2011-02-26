@@ -60,6 +60,12 @@ case class ServiceLocation( url : String, quality : Double, lastUpdated : DateTi
 case class Service( id : ServiceId, sl:ServiceLocation)
 
 /**
+ * Utility case class holding info about one specific serviceId and all its present available serviceLocations
+ *
+ */
+case class ServiceWithLocations( id : ServiceId, locations : Array[ServiceLocation])
+
+/**
  * When a client asks for a serviceLocation, it must supply a clientId - This is used to make it possible to log/track which clients is using which services..
  *
  * '''environment''' is a string specifying the environment the client lives in. It could be prod, test, preprod etc. It does not have to be

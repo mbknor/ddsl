@@ -83,13 +83,58 @@ class ZDao (val hosts : String) extends Dao with Watcher {
 
   val sessionTimeout = 5*60*1000
 
-  val basePath = "/ddsl/services/"
+  val ddslServicesBasePath = "/ddsl/services"
+
+  val basePath = ddslServicesBasePath + "/" 
 
   private val client = new ZooKeeper(hosts, sessionTimeout, this)
 
 
   private def getSidPath( sid : ServiceId ) : String = {
     return basePath + sid.environment + "/" + sid.serviceType + "/" + sid.name + "/" + sid.version
+  }
+
+  /**
+   * Returns a list of all vailable ServiceIds currently stored in the ddsl-network in zookeeper.
+   */
+  def getAllAvailableServices() : Array[ServiceWithLocations] = {
+
+    def getLastPartOfString(path : String) : String = {
+      val parts = path.split("/")
+      return parts(parts.length - 1)
+    }
+
+    //first we look for for all environments
+    val serviceIds = client.getChildren( ddslServicesBasePath, false).map{ a =>
+      //got all environments
+      client.getChildren( ddslServicesBasePath + "/"+a, false ).map{ b =>
+        //got all types
+        client.getChildren( ddslServicesBasePath + "/" + a + "/" + b, false ).map { c =>
+          //got all services
+          client.getChildren( ddslServicesBasePath + "/" + a + "/" + b + "/" + c, false ).map { d =>
+            //got all versions
+            ServiceId(a, b, c , d)
+          }
+        }.flatten
+
+      }.flatten
+    }.flatten
+
+
+    //now w have the list of all serviceIds.
+    //this list will contain all serviceIds ever stored in zookeeper networks..
+
+    //we must find the locations
+    val list = serviceIds.map { id =>
+      ServiceWithLocations( id, getSLs(id))
+    }.filter {
+      swl : ServiceWithLocations =>
+      //remove all with empty location-List
+      swl.locations.length > 0
+    }
+
+    return list.toArray
+    
   }
 
   def disconnect{
@@ -191,6 +236,9 @@ class ZDao (val hosts : String) extends Dao with Watcher {
 
   override def getSLs(id : ServiceId) : Array[ServiceLocation] = {
 
+    /**
+     * Returns the string-content of a zookeeper file/path
+     */
     def getInfoString( path : String ) : String = {
 
       try{
@@ -254,6 +302,7 @@ object ZDaoTestMain{
     val hosts = "localhost:2181"
     val dao = new ZDao( hosts )
 
+
     val sid = ServiceId("test", "http", "testService", "1.0")
     val sl = ServiceLocation("http://localhost/url", 10.0, new DateTime(), "127.0.0.1")
     Thread.sleep( 100 )
@@ -267,6 +316,11 @@ object ZDaoTestMain{
     println(">>start list")
     dao.getSLs( sid).foreach{println( _ )}
     println("<<end list")
+
+
+    println(">>start getAllAvailableServices-list")
+    dao.getAllAvailableServices().foreach{ println(_)}
+    println("<<end getAllAvailableServices-list")
 
     dao.serviceDown( s )
 

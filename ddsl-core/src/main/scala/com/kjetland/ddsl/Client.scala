@@ -95,12 +95,17 @@ trait DdslClient {
   def disconnect()
 
 
+  /**
+   * Returns list of all services pressent in the ddsl-network
+   */
+  def getAllAvailableServices() : Array[ServiceWithLocations]
+
 
 }
 
 
 /**
- *This is the main DdslClient-implementation. It uses ZooKeeper to store the information about which services is
+ *  This is the main DdslClient-implementation. It uses ZooKeeper to store the information about which services is
  * up. The information is stored distributed in ZooKeeper.
  *
  * Have a look at [[com.kjetland.ddsl.DdslClient]] for mor information
@@ -208,6 +213,10 @@ class DdslClientImpl( config : DdslConfig) extends DdslClient{
     }
   }
 
+  def getAllAvailableServices() : Array[ServiceWithLocations] = {
+    return dao.getAllAvailableServices
+  }
+
 
 }
 
@@ -257,6 +266,8 @@ class DdslClientOnlyFallbackImpl( ddslConfig : DdslConfig) extends DdslClient {
   private def createFallbackSl( url : String ) : ServiceLocation = {
     ServiceLocation( url, DdslDefaults.DEFAULT_QUALITY, new DateTime(), "unknown")
   }
+
+  def getAllAvailableServices() : Array[ServiceWithLocations] = throw new RuntimeException("getAllAvailableServices() does not work in fallbackmode")
 
 
 }
@@ -316,5 +327,9 @@ class DdslClientCacheReadsImpl( realClient : DdslClient, ttl_mills : Long) exten
   }
   
   override def disconnect() = realClient.disconnect
+
+  //no point in caching this method
+  def getAllAvailableServices() : Array[ServiceWithLocations] = realClient.getAllAvailableServices()
+
 
 }
