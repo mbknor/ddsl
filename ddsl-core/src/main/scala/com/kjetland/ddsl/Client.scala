@@ -124,6 +124,7 @@ class DdslClientImpl( config : DdslConfig) extends DdslClient{
   private val log = Logger.getLogger( getClass )
 
   val dao = new ZDao( config.hosts )
+  
 
   override def serviceUp( service : Service) : Boolean = {
     try{

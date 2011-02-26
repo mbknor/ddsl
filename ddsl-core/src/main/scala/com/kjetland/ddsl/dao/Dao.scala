@@ -11,6 +11,7 @@ import org.apache.commons.codec.net.URLCodec
 import org.apache.zookeeper.data.Stat
 import scala.collection.JavaConversions._
 import com.kjetland.ddsl.model._
+import java.util.concurrent.atomic.AtomicBoolean
 
 /**
  * Created by IntelliJ IDEA.
@@ -89,13 +90,35 @@ class ZDao (val hosts : String) extends Dao with Watcher {
 
   private val client = new ZooKeeper(hosts, sessionTimeout, this)
 
+  private var haveDisconnected = new AtomicBoolean(false);
+
+  registerShutdownHook()
+
+
+  /**
+   *Sometimes when killing an app by pressing ctrl+c, it's tcp connections
+   * looks as they are still active for quite some time..
+   * In our case this problem will fool zookeeper (for some time) to believe that our service
+   * is still available after our server has quit..
+   * To try to prevent this, we register a shutdown hook which (might) be called
+   * when the JVM quit...
+   */
+  private def registerShutdownHook(){
+    Runtime.getRuntime.addShutdownHook( new Thread {
+      override def run{
+        disconnect
+      }
+    })
+  }
+
+
 
   private def getSidPath( sid : ServiceId ) : String = {
     return basePath + sid.environment + "/" + sid.serviceType + "/" + sid.name + "/" + sid.version
   }
 
   /**
-   * Returns a list of all vailable ServiceIds currently stored in the ddsl-network in zookeeper.
+   * Returns a list of all available ServiceIds currently stored in the ddsl-network in zookeeper.
    */
   def getAllAvailableServices() : Array[ServiceWithLocations] = {
 
@@ -138,8 +161,12 @@ class ZDao (val hosts : String) extends Dao with Watcher {
   }
 
   def disconnect{
-    log.info("Disconnecting from zookeeper - all services will be marked as offline")
-    client.close
+
+    //using haveDisconnected to only try to disconnect once...
+    if( haveDisconnected.compareAndSet(false, true )){
+      log.info("Disconnecting from zookeeper - all services will be marked as offline")
+      client.close
+    }
   }
 
 
