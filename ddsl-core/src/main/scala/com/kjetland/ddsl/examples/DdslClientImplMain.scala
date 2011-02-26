@@ -29,8 +29,8 @@ object DdslClientImplMain extends ExampleLogging{
     val client = new DdslClientImpl( new DdslConfigManualImpl("localhost:2181"))
 
     val sid = ServiceId("test", "http", "testService", "1.0")
-    val sl = ServiceLocation("http://localhost/url", "http://localhost/test", 10.0, new DateTime(),null)//ip == null -> will be resolved
-    val sl2 = ServiceLocation("http://localhost:90/url", "http://localhost:90/test", 9.0, new DateTime(), "127.0.0.1")
+    val sl = ServiceLocation("http://localhost/url", 10.0, new DateTime(),null)//ip == null -> will be resolved
+    val sl2 = ServiceLocation("http://localhost:90/url", 9.0, new DateTime(), "127.0.0.1")
 
     client.serviceUp( Service(sid, sl))
 
@@ -51,8 +51,8 @@ object DdslClientImplMain extends ExampleLogging{
     println("**********************")
 
     val sid2 = ServiceId("test", "http", "testServiceX", "1.0")
-    val sl3 = ServiceLocation("http://localhost/url", "http://localhost/test", 10.0, new DateTime(),null)//ip == null -> will be resolved
-    val sl4 = ServiceLocation("http://localhost:90/url", "http://localhost:90/test", 10.0, new DateTime(), null)
+    val sl3 = ServiceLocation("http://localhost/url", 10.0, new DateTime(),null)//ip == null -> will be resolved
+    val sl4 = ServiceLocation("http://localhost:90/url", 10.0, new DateTime(), null)
 
     client.serviceUp( Service(sid2, sl3))
     client.serviceUp( Service(sid2, sl4))

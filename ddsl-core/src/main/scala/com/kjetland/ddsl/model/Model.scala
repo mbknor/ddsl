@@ -42,9 +42,6 @@ case class ServiceId(environment : String, serviceType : String, name : String, 
  *
  * '''url''' is a string that tells the client where to find this particular instance of the service
  *
- * '''testUrl''' can be a complete url that can be used to test the service runing at this specific url..
- * It can be useful if you want to create some service verifying that some services is working properly
- *
  * '''quality''' is a double-value specifying the quality of this particular service. The higher number the better. For instance,
  * you could inject a proxy-service just by telling DDSL that you have higher quality than the other instances of an particular service.. This will
  * make all clients use your location instead.
@@ -54,7 +51,7 @@ case class ServiceId(environment : String, serviceType : String, name : String, 
  * if ''ip'' is not specified, it will be resolved.
  *
  */
-case class ServiceLocation( url : String, testUrl : String, quality : Double, lastUpdated : DateTime, ip : String)
+case class ServiceLocation( url : String, quality : Double, lastUpdated : DateTime, ip : String)
 
 
 /**
@@ -91,8 +88,4 @@ object DdslDefaults{
   val configSystemEnvironmentName = "DDSL_CONFIG_PATH"
 }
 
-/**
- * Used internal in the fallback implementation
- */
-case class DdslUrls( url : String, testUrl : String)
 

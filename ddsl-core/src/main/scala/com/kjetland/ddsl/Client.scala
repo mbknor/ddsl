@@ -242,7 +242,7 @@ class DdslClientOnlyFallbackImpl( ddslConfig : DdslConfig) extends DdslClient {
     log.warn("Looking up serviceLocation '"+sr.sid+"' in configFile")
 
     try{
-      val sl = createFallbackSl( ddslConfig.getStaticUrls( sr.sid) )
+      val sl = createFallbackSl( ddslConfig.getStaticUrl( sr.sid) )
       List(sl).toArray
     }catch{
       case e:Exception => {
@@ -254,8 +254,8 @@ class DdslClientOnlyFallbackImpl( ddslConfig : DdslConfig) extends DdslClient {
   override def disconnect() = {}//nothing to do
 
 
-  private def createFallbackSl( urls : DdslUrls ) : ServiceLocation = {
-    ServiceLocation( urls.url, urls.testUrl, DdslDefaults.DEFAULT_QUALITY, new DateTime(), "unknown")
+  private def createFallbackSl( url : String ) : ServiceLocation = {
+    ServiceLocation( url, DdslDefaults.DEFAULT_QUALITY, new DateTime(), "unknown")
   }
 
 

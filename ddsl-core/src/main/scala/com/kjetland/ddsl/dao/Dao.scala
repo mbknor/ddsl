@@ -33,7 +33,6 @@ object DdslDataConverter{
     props.put("ddslDataVersion", ddslDataVersion)
 
     props.put( "url", sl.url)
-    props.put( "testUrl", sl.testUrl)
     props.put( "quality", sl.quality.toString)
     props.put( "lastUpdated", dtf.print( sl.lastUpdated) )
     props.put( "ip", sl.ip )
@@ -58,7 +57,6 @@ object DdslDataConverter{
 
     val sl = ServiceLocation(
       p.getProperty("url"),
-      p.getProperty("testUrl"),
       p.getProperty("quality").toDouble,
       dtf.parseDateTime(p.getProperty("lastUpdated")),
       p.getProperty("ip"))
@@ -257,9 +255,9 @@ object ZDaoTestMain{
     val dao = new ZDao( hosts )
 
     val sid = ServiceId("test", "http", "testService", "1.0")
-    val sl = ServiceLocation("http://localhost/url", "http://localhost/test", 10.0, new DateTime(), "127.0.0.1")
+    val sl = ServiceLocation("http://localhost/url", 10.0, new DateTime(), "127.0.0.1")
     Thread.sleep( 100 )
-    val sl2 = ServiceLocation("http://localhost:90/url", "http://localhost:90/test", 9.0, new DateTime(), "127.0.0.1")
+    val sl2 = ServiceLocation("http://localhost:90/url", 9.0, new DateTime(), "127.0.0.1")
 
     val s = Service(sid,sl)
 

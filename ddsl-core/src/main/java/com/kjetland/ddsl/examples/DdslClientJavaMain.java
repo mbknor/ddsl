@@ -33,7 +33,7 @@ public class DdslClientJavaMain {
         ServiceId sid = new ServiceId("test", "http", "testJavaService", "1.0");
         log.info("sid: " + sid);
 
-        ServiceLocation sl = new ServiceLocation("url", "testUrl", 0.0, new DateTime(), null);
+        ServiceLocation sl = new ServiceLocation("url", 0.0, new DateTime(), null);
         log.info("sl: " + sl);
 
         ClientId cid = new ClientId("test", "testClient", "0.1", null);

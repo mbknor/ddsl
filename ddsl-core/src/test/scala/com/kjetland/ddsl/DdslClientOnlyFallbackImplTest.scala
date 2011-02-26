@@ -1,7 +1,7 @@
 package com.kjetland.ddsl
 
 import config.DdslConfigManualImpl
-import model.{DdslUrls, ClientId, ServiceRequest, ServiceId}
+import model.{ClientId, ServiceRequest, ServiceId}
 import org.scalatest.junit.{AssertionsForJUnit, JUnitSuite}
 import org.junit.Assert._
 import org.junit.{After, Before, Test}
@@ -22,16 +22,15 @@ class DdslClientOnlyFallbackImplTest extends AssertionsForJUnit with JUnitSuite{
     val sid = ServiceId("test", "http", "testService", "1.0")
     val sr = ServiceRequest( sid, ClientId("test", "testClient", "1.0", "127.0.0.1"))
 
-    val url = DdslUrls("myUrl", "myTestUrl")
+    val url = "myUrl"
 
-    val config = new DdslConfigManualImpl( "hostList", Map[ServiceId, DdslUrls]( sid -> url))
+    val config = new DdslConfigManualImpl( "hostList", Map[ServiceId, String]( sid -> url))
 
 
     val srs = new DdslClientOnlyFallbackImpl(config).getServiceLocations(sr )
 
     assertEquals( 1, srs.size)
-    assertEquals( url.url, srs(0).url)
-    assertEquals( url.testUrl, srs(0).testUrl)
+    assertEquals( url, srs(0).url)
 
 
   }

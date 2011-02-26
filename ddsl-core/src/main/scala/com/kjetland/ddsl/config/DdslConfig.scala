@@ -16,19 +16,19 @@ import com.kjetland.ddsl.model._
 
 trait DdslConfig {
   def hosts : String
-  def getStaticUrls( sid : ServiceId) : DdslUrls
+  def getStaticUrl( sid : ServiceId) : String
 }
 
 /**
  * Use this config class when you want to specify all config manually
  */
-class DdslConfigManualImpl(val hosts : String, urlsMap : Map[ServiceId, DdslUrls]) extends DdslConfig {
+class DdslConfigManualImpl(val hosts : String, urlsMap : Map[ServiceId, String]) extends DdslConfig {
 
-  def this( hosts : String ) = this( hosts, Map[ServiceId, DdslUrls]() )
+  def this( hosts : String ) = this( hosts, Map[ServiceId, String]() )
 
   if( hosts == null ) throw new Exception("hosts cannot be null")
 
-  override def getStaticUrls( sid : ServiceId) : DdslUrls = {
+  override def getStaticUrl( sid : ServiceId) : String = {
     urlsMap.getOrElse(sid, {
       throw new Exception("Cannot find urls for " + sid)
     })
@@ -53,11 +53,10 @@ class DdslConfigFromFile( file : File) extends DdslConfig {
     }
   }
 
-  override def getStaticUrls( sid : ServiceId) : DdslUrls = {
+  override def getStaticUrl( sid : ServiceId) : String = {
     val key = sid.getMapKey
     val url = getValue( key + "_url" )
-    val testUrl = getValue( key + "_testUrl" )
-    return DdslUrls( url, testUrl)
+    return url
   }
 
 
@@ -97,7 +96,7 @@ class DdslConfigSysEnvReloading extends DdslConfig {
 
   override def hosts : String = loadConfig.hosts
 
-  override def getStaticUrls( sid : ServiceId) : DdslUrls = loadConfig.getStaticUrls( sid ) 
+  override def getStaticUrl( sid : ServiceId) : String = loadConfig.getStaticUrl( sid )
 
   private def loadConfig = new DdslConfigFromFile( pathToConfig )
 

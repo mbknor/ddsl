@@ -18,7 +18,7 @@ class DdslDataConverterTest  extends AssertionsForJUnit with JUnitSuite{
 
 
   @Test def verifyConverting(){
-    val sl = ServiceLocation("http://localhost/url", "http://localhost/test", 10.0, new DateTime(2011, 1, 16, 13, 10, 1,0), "127.0.0.1")
+    val sl = ServiceLocation("http://localhost/url", 10.0, new DateTime(2011, 1, 16, 13, 10, 1,0), "127.0.0.1")
 
     val s = DdslDataConverter.getServiceLocationAsString( sl)
     val sl2 = DdslDataConverter.getServiceLocationFromString( s )

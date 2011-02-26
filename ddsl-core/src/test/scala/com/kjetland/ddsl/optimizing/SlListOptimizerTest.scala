@@ -20,9 +20,9 @@ class SlListOptimizerTest extends AssertionsForJUnit with JUnitSuite{
 
   @Test def verifyOptimizing(){
 
-    val sl1 = ServiceLocation("u1", "tu1", DdslDefaults.DEFAULT_QUALITY, new DateTime(), "ip1")
-    val sl2 = ServiceLocation("u2", "tu2", DdslDefaults.DEFAULT_QUALITY-1.0, new DateTime(), "ip2")
-    val sl3 = ServiceLocation("u3", "tu3", DdslDefaults.DEFAULT_QUALITY, new DateTime(), "x")
+    val sl1 = ServiceLocation("u1", DdslDefaults.DEFAULT_QUALITY, new DateTime(), "ip1")
+    val sl2 = ServiceLocation("u2", DdslDefaults.DEFAULT_QUALITY-1.0, new DateTime(), "ip2")
+    val sl3 = ServiceLocation("u3", DdslDefaults.DEFAULT_QUALITY, new DateTime(), "x")
 
 
     val list = List(sl1, sl2 )
