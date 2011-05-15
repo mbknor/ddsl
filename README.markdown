@@ -11,6 +11,7 @@ DDSL is written in Scala and can be used by Scala, Java or any other Language on
 Project history
 -------------------
 
+ * 20110226 - version 0.2 released
  * 20110125 - version 0.1.RC1 released
 
 
