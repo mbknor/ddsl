@@ -85,12 +85,15 @@ object SlListOptimizer{
 
   }
 
+
+  private val random = new Random( System.currentTimeMillis)
+
   def randomizeList[T]( orgList : ListBuffer[T]) : ListBuffer[T] = {
     val list = new ListBuffer[T]
     list appendAll orgList
     val randomizedList = new ListBuffer[T]
     while( !list.isEmpty ){
-      val index = (scala.math.random * list.size).toInt
+      val index = random.nextInt(list.size);
       val sl = list.remove( index)
       randomizedList += sl
     }
