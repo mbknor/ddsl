@@ -11,6 +11,7 @@ DDSL is written in Scala and can be used by Scala, Java or any other Language on
 Project history
 -------------------
 
+ * 201105xx - Added Java example
  * 20110226 - version 0.2 released
  * 20110125 - version 0.1.RC1 released
 
@@ -102,3 +103,7 @@ Have a look at the examples to see how it can be used:
 
  * [Scala example](https://github.com/mbknor/ddsl/tree/master/examples/ddsl-scala-examples)
  * [Java example](https://github.com/mbknor/ddsl/tree/master/examples/ddsl-java-examples)
+
+----
+
+Also, have a look at [DDSL-Status](https://github.com/mbknor/ddsl-status), a simple web-app showing status of all online services.
