@@ -2,53 +2,54 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <groupId>com.cedarsoft</groupId>
-    <artifactId>open</artifactId>
-    <version>4.0.2</version>
-  </parent>
-
   <groupId>com.kjetland.ddsl</groupId>
   <artifactId>ddsl-java-examples</artifactId>
   <version>0.1-SNAPSHOT</version>
 
-  <scm>
-    <connection>scm:git:git://git.cedarsoft.com/com.kjetland.ddsl.ddsl-java-examples</connection>
-    <developerConnection>scm:git:ssh://git.cedarsoft.com/home/git/com.kjetland.ddsl.ddsl-java-examples</developerConnection>
-  </scm>
+  <repositories>
+        <repository>
+            <id>mbk_mvn_repo</id>
+            <name>mbk_mvn_repo</name>
+            <url>http://mbknor.github.com/m2repo/releases</url>
+        </repository>
+    </repositories>
 
   <dependencies>
-    <!--Guava-->
     <dependency>
-      <groupId>com.google.guava</groupId>
-      <artifactId>guava</artifactId>
+      <groupId>com.kjetland.ddsl</groupId>
+      <artifactId>ddsl_2.8.1</artifactId>
+      <version>0.2</version>
     </dependency>
-
-    <!--NotNull Annotations-->
-    <dependency>
-      <groupId>com.intellij</groupId>
-      <artifactId>annotations</artifactId>
-      <scope>provided</scope>
-    </dependency>
-
-    <!--Test Dependencies-->
-    <dependency>
-      <groupId>com.cedarsoft.commons</groupId>
-      <artifactId>test-utils</artifactId>
-      <version>3.0.0</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-    </dependency>
+	<dependency>
+		<groupId>log4j</groupId>
+	    <artifactId>log4j</artifactId>
+	    <version>1.2.15</version>
+		<exclusions>
+			<exclusion>
+	      		<groupId>javax.jms</groupId>
+	      		<artifactId>jms</artifactId>
+			</exclusion>
+			<exclusion>
+	      		<groupId>com.sun.jdmk</groupId>
+	      		<artifactId>jmxtools</artifactId>
+			</exclusion>
+			<exclusion>
+	      		<groupId>com.sun.jmx</groupId>
+	      		<artifactId>jmxri</artifactId>
+			</exclusion>
+		</exclusions>
+	</dependency>
   </dependencies>
+  <build>
+	<resources>
+		<resource>
+			<directory>${basedir}/src/main/resources</directory>
+			<includes>
+				<include>*.*</include>
+			</includes>
+		</resource>
+	</resources>
+  </build>
 
-  <mailingLists>
-    <mailingList>
-      <name>Mail Support</name>
-      <post>info@cedarsoft.com</post>
-    </mailingList>
-  </mailingLists>
 
 </project>
