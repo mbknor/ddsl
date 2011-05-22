@@ -101,4 +101,4 @@ It specifies the [ServiceId](http://mbknor.github.com/ddsl-scaladoc/com/kjetland
 Have a look at the examples to see how it can be used:
 
  * [Scala example](https://github.com/mbknor/ddsl/tree/master/examples/ddsl-scala-examples)
- * Java example (coming soon)
+ * [Java example](https://github.com/mbknor/ddsl/tree/master/examples/ddsl-java-examples)
