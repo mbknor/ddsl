@@ -54,16 +54,22 @@ object DdslServiceProvider{
         val out = new BufferedWriter( new OutputStreamWriter(s.getOutputStream ) )
         val in = new BufferedReader( new InputStreamReader( s.getInputStream))
 
-        while( true ){
+        var continue = true
+        while( continue ){
           //wait for command from client
           val command = in.readLine
-          println("Received: " + command)
+          if (command == null) {
+              s.close();
+              continue = false
+          } else {
+              println("Received: " + command)
 
-          //send greeting
-          val msg = "Hello from server at port " + port + " ("+System.currentTimeMillis+")"
-          println("Sending: " + msg)
-          out.write(msg + "\n");
-          out.flush
+              //send greeting
+              val msg = "Hello from server at port " + port + " ("+System.currentTimeMillis+")"
+              println("Sending: " + msg)
+              out.write(msg + "\n");
+              out.flush
+          }
         }
       }catch{
         case _ => println("Lost connection")
