@@ -28,11 +28,13 @@ Go into the folder ddsl/examples/ddsl-java-examples
 We are now ready to start the first server:
 
 execute the following using maven: 
+
 	mvn package exec:java -Dexec.mainClass="ddslexamples.DdslServiceProvider"
 
 The server starts up, picks a random port and starts listening on it. then it broadcasts its location to ddsl.
 
 To set up a client, just open a new terminal, go to the folder ddsl/examples/ddsl-java-examples, and start the consumer with maven: 
+
 	mvn package exec:java -Dexec.mainClass="ddslexamples.DdslServiceConsumer"
 
 Now you can see them communicating
