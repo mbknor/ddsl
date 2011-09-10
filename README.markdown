@@ -5,7 +5,9 @@ DDSL - Dynamic Distributed Service Locator
 
  * Now also with module for [Play Framework](https://github.com/mbknor/ddsl-playframework-module)
 
-DDSL is written in Scala and can be used by Scala, Java or any other Language on the JVM
+DDSL is written in Scala and can be used by Scala, Java or any other Language on the JVM.
+
+Here you can find <a href="http://bit.ly/kEhVOc ">my Lightningtalk about DDSL</a> at Roots Conference in may, 2011.
 
 
 Project history
