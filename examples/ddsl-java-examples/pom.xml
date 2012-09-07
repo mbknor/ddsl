@@ -2,9 +2,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.kjetland.ddsl</groupId>
+  <groupId>com.kjetland</groupId>
   <artifactId>ddsl-java-examples</artifactId>
-  <version>0.1-SNAPSHOT</version>
+  <version>0.3-SNAPSHOT</version>
 
   <repositories>
         <repository>
@@ -16,9 +16,9 @@
 
   <dependencies>
     <dependency>
-      <groupId>com.kjetland.ddsl</groupId>
-      <artifactId>ddsl_2.8.1</artifactId>
-      <version>0.2</version>
+      <groupId>com.kjetland</groupId>
+      <artifactId>ddsl_2.9.2</artifactId>
+      <version>0.3-SNAPSHOT</version>
     </dependency>
 	<dependency>
 		<groupId>log4j</groupId>

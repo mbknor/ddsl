@@ -4,8 +4,9 @@ import com.kjetland.ddsl.*;
 import com.kjetland.ddsl.config.DdslConfig;
 import com.kjetland.ddsl.config.DdslConfigManualImpl;
 import com.kjetland.ddsl.model.*;
-import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Created by IntelliJ IDEA.
@@ -16,7 +17,7 @@ import org.joda.time.DateTime;
  */
 public class DdslClientJavaMain {
 
-    private static Logger log = Logger.getLogger(DdslClientJavaMain.class);
+    private static Logger log = LoggerFactory.getLogger(DdslClientJavaMain.class);
 
     public static void main(String[] args){
         try{

@@ -35,7 +35,8 @@ class SlListOptimizerTest extends AssertionsForJUnit with JUnitSuite{
     
   }
 
-  @Test def verifyRandomizeList{
+  @Test def verifyRandomizeList()
+  {
 
     //try x times to get a list that is not equal to org list
     //must do this since the randomlist might bee equal to orglist

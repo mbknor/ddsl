@@ -16,7 +16,7 @@ import org.junit.{After, Before, Test}
 
 class DdslClientOnlyFallbackImplTest extends AssertionsForJUnit with JUnitSuite{
 
-  @Test def verifyResolveServiceLocations{
+  @Test def verifyResolveServiceLocations(){
 
 
     val sid = ServiceId("test", "http", "testService", "1.0")

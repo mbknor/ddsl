@@ -1,7 +1,6 @@
 package com.kjetland.ddsl
 
 import exceptions.NoDDSLServiceLocationFoundException
-import org.apache.log4j.Logger
 import java.net.InetAddress
 import org.joda.time.DateTime
 import collection.mutable.HashMap
@@ -9,6 +8,7 @@ import com.kjetland.ddsl.model._
 import com.kjetland.ddsl.config._
 import com.kjetland.ddsl.dao._
 import com.kjetland.ddsl.optimizing.SlListOptimizer
+import org.slf4j.LoggerFactory
 
 /**
  * Created by IntelliJ IDEA.
@@ -121,7 +121,7 @@ class DdslClientImpl( config : DdslConfig) extends DdslClient{
    */
   def this() = this( new DdslConfigSysEnvReloading )
 
-  private val log = Logger.getLogger( getClass )
+  private val log = LoggerFactory.getLogger( getClass )
 
   val dao = new ZDao( config.hosts )
   
@@ -235,7 +235,7 @@ class DdslClientImpl( config : DdslConfig) extends DdslClient{
  */
 class DdslClientOnlyFallbackImpl( ddslConfig : DdslConfig) extends DdslClient {
 
-  private val log = Logger.getLogger(getClass)
+  private val log = LoggerFactory.getLogger(getClass)
 
   override def serviceUp( s : Service) : Boolean = {
     log.warn("Ignoring serviceUp: " + s)
@@ -281,7 +281,7 @@ class DdslClientOnlyFallbackImpl( ddslConfig : DdslConfig) extends DdslClient {
  */
 class DdslClientCacheReadsImpl( realClient : DdslClient, ttl_mills : Long) extends DdslClient {
 
-  private val log = Logger.getLogger( getClass )
+  private val log = LoggerFactory.getLogger( getClass )
 
   var lastCacheClear  = System.currentTimeMillis
   val cache = new HashMap[String, ServiceLocation]
@@ -297,7 +297,7 @@ class DdslClientCacheReadsImpl( realClient : DdslClient, ttl_mills : Long) exten
 
   @throws(classOf[NoDDSLServiceLocationFoundException])
   override def getBestServiceLocation(sr : ServiceRequest) : ServiceLocation = {
-    checkAndInvalidateCache
+    checkAndInvalidateCache()
 
     //look in cache
     val key = sr.toString
@@ -317,7 +317,7 @@ class DdslClientCacheReadsImpl( realClient : DdslClient, ttl_mills : Long) exten
     }
   }
 
-  private def checkAndInvalidateCache {
+  private def checkAndInvalidateCache() {
     val now = System.currentTimeMillis
     val millsSinceLastCacheClear = now - lastCacheClear
     if( millsSinceLastCacheClear > ttl_mills ){

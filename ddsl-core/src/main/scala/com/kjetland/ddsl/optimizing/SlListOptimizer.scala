@@ -47,7 +47,7 @@ object SlListOptimizer{
         }
       
       q2list.get( quality ) match {
-        case Some(list : ListBuffer[ServiceLocation]) => list += sl
+        case Some(list) => list += sl
         case None => {
           val list = new ListBuffer[ServiceLocation]
           list += sl

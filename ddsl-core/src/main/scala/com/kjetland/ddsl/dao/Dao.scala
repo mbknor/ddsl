@@ -1,7 +1,6 @@
 package com.kjetland.ddsl.dao
 
 import org.joda.time.DateTime
-import org.apache.log4j.Logger
 import org.apache.zookeeper.{WatchedEvent, Watcher, CreateMode, ZooKeeper}
 import org.apache.zookeeper.ZooDefs
 import java.util.Properties
@@ -12,6 +11,7 @@ import org.apache.zookeeper.data.Stat
 import scala.collection.JavaConversions._
 import com.kjetland.ddsl.model._
 import java.util.concurrent.atomic.AtomicBoolean
+import org.slf4j.LoggerFactory
 
 /**
  * Created by IntelliJ IDEA.
@@ -79,7 +79,7 @@ trait Dao{
 
 class ZDao (val hosts : String) extends Dao with Watcher {
 
-  private val log = Logger.getLogger(getClass())
+  private val log = LoggerFactory.getLogger(getClass())
 
 
   val sessionTimeout = 5*60*1000
@@ -106,7 +106,7 @@ class ZDao (val hosts : String) extends Dao with Watcher {
   private def registerShutdownHook(){
     Runtime.getRuntime.addShutdownHook( new Thread {
       override def run{
-        disconnect
+        disconnect()
       }
     })
   }
@@ -160,7 +160,7 @@ class ZDao (val hosts : String) extends Dao with Watcher {
     
   }
 
-  def disconnect{
+  def disconnect(){
 
     //using haveDisconnected to only try to disconnect once...
     if( haveDisconnected.compareAndSet(false, true )){
@@ -313,9 +313,9 @@ class ZDao (val hosts : String) extends Dao with Watcher {
 object ZDaoTestMain{
 
   def main ( args : Array[String]){
-    val log = Logger.getLogger( getClass )
+    val log = LoggerFactory.getLogger( getClass )
     try{
-      doStuff
+      doStuff()
     }catch{
       case x:Exception => log.error("error", x)
     }
@@ -323,7 +323,7 @@ object ZDaoTestMain{
 
   }
 
-  def doStuff {
+  def doStuff() {
     println("hw")
 
     val hosts = "localhost:2181"

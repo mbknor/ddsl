@@ -1,10 +1,10 @@
 package com.kjetland.ddsl.examples
 
 import org.joda.time.DateTime
-import org.apache.log4j.Logger
 import com.kjetland.ddsl._
 import com.kjetland.ddsl.model._
 import com.kjetland.ddsl.config._
+import org.slf4j.LoggerFactory
 
 /**
  * Created by IntelliJ IDEA.
@@ -17,7 +17,7 @@ import com.kjetland.ddsl.config._
 object DdslClientImplMain extends ExampleLogging{
 
   def main(args : Array[String]){
-    val log = Logger.getLogger(getClass)
+    val log = LoggerFactory.getLogger(getClass)
     try{
       doStuff
     }catch{

@@ -1,10 +1,10 @@
 package com.kjetland.ddsl.config
 
-import org.apache.log4j.Logger
 import collection.immutable.HashMap
 import java.util.Properties
 import java.io.{FileInputStream, File}
 import com.kjetland.ddsl.model._
+import org.slf4j.LoggerFactory
 
 /**
  * Created by IntelliJ IDEA.
@@ -38,7 +38,7 @@ class DdslConfigManualImpl(val hosts : String, urlsMap : Map[ServiceId, String])
 
 class DdslConfigFromFile( file : File) extends DdslConfig {
 
-  val log = Logger.getLogger( getClass)
+  val log = LoggerFactory.getLogger( getClass)
 
   log.info("Loading ddslConfig from " + file)
 
@@ -88,7 +88,7 @@ class DdslConfigFromFile( file : File) extends DdslConfig {
  */
 class DdslConfigSysEnvReloading extends DdslConfig {
 
-  val log = Logger.getLogger(getClass)
+  val log = LoggerFactory.getLogger(getClass)
 
   val envName = DdslDefaults.configSystemEnvironmentName
 
