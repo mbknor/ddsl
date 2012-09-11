@@ -4,7 +4,7 @@ DDSL Command Line Tool
 What is this?
 ----------------
 
-Ddsl is implemented using Scala and is easy to include in your Scala/Java application,
+[Ddsl](https://github.com/mbknor/ddsl) is implemented using Scala and is easy to include in your Scala/Java application,
 but if you are using a none-JVM-language (Eg. Ruby on Rails) for your application you can use this **ddsl-cmdline-tool**.
 
 How to use it
