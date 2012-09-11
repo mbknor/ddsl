@@ -137,7 +137,7 @@ object App {
     sb.append("serviceUp " + Json.generate(s) + "\n")
     sb.append("serviceDown " + Json.generate(s) + "\n")
     sb.append("help\n")
-    sb.append("exit\n")
+    sb.append("exit")
 
 
     return OkResult("Available commands:\n" + sb)
