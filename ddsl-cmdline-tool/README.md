@@ -13,10 +13,10 @@ How to use it
 You can launch **ddsl-cmdline-tool** in a childprocess from your own app/process.
 As long as you make sure that you kill (or it dies) if you die or quit, then you are fine.
 
-*If you are using **serviceUp** it is important to kill/qui **ddsl-cmdline-tool** if your app dies/quits,
-to make sure your service is taken offline*.
+If you are using **serviceUp** it is important to kill/quit **ddsl-cmdline-tool** if your app dies/quits,
+to make sure your service is taken offline.
 
-You can communicate with **ddsl-cmdline-tool** using stdin/stdout in a simple telnet-ish protocol using json.
+You communicate with **ddsl-cmdline-tool** using stdin/stdout in a simple telnet-ish protocol using json.
 
 You can of course lanch it directly from the shell to test it.
 
