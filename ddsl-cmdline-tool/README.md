@@ -77,5 +77,8 @@ Example:
 Good luck :)
 
 
+Todo
+---------------
 
+* Make a distribution so it can be used without sbt
 
