@@ -39,6 +39,8 @@ Some examples
 
     sbt run
 
+You need sbt for the time being. get it with "brew install sbt".
+
 If you want to customize where to find the ddsl_config.properties you can eigher set it as system environment variable like this:
 
     export DDSL_CONFIG_PATH=../ddsl-core/ddsl_config.properties
@@ -70,9 +72,9 @@ The commands are a one-to-one-mapping to the methods found in [DdslClient](http:
 Example:
 
     Send:     getAllAvailableServices\n
-    Receive:  ok ok [{"id":{"environment":"test","serviceType":"telnet","name":"telnetServer","version":"0.1"},"locations":[{"url":"telnet://localhost:40039","quality":0.0,"lastUpdated":1347396898000,"ip":"10.0.0.7"},{"url":"telnet://localhost:40080","quality":0.0,"lastUpdated":1347396537000,"ip":"10.0.0.7"}]}]
+    Receive:  ok [{"id":{"environment":"test","serviceType":"telnet","name":"telnetServer","version":"0.1"},"locations":[{"url":"telnet://localhost:40039","quality":0.0,"lastUpdated":1347396898000,"ip":"10.0.0.7"},{"url":"telnet://localhost:40080","quality":0.0,"lastUpdated":1347396537000,"ip":"10.0.0.7"}]}]
 
-Good look :)
+Good luck :)
 
 
 

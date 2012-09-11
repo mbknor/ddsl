@@ -7,12 +7,15 @@ DDSL - Dynamic Distributed Service Locator
 
 DDSL is written in Scala and can be used by Scala, Java or any other Language on the JVM.
 
+Have a look at [ddsl-cmdline-tool](https://github.com/mbknor/ddsl/tree/master/ddsl-cmdline-tool) if you are using a none-JVM-language like Ruby on Rails.
+
 Here you can find <a href="http://bit.ly/kEhVOc ">my Lightningtalk about DDSL</a> at Roots Conference in may, 2011.
 
 
 Project history
 -------------------
 
+ * 20120911 - Added [ddsl-cmdline-tool](https://github.com/mbknor/ddsl/tree/master/ddsl-cmdline-tool)
  * 20120907 - (0.3-SNAPSHOT) Upgraded to scala 2.9.2, sbt 0.12, replaced log4j with logback/slf4j, and upgraded to zookeper 3.4.3
  * 201105xx - Added Java example
  * 20110226 - version 0.2 released
