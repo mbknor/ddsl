@@ -29,7 +29,11 @@ object DdslCmdLineToolBuild extends Build {
   object Dependencies {
 
     val runtime = Seq(
-      "com.kjetland" %% "ddsl" % BuildSettings.buildVersion,
+      "com.kjetland" %% "ddsl" % BuildSettings.buildVersion intransitive(),
+      "org.apache.zookeeper"    % "zookeeper"         % "3.4.3" intransitive(), // Explicit include here to make it intransitive..
+      "joda-time"               % "joda-time"         % "1.6.2",
+      "commons-codec"           % "commons-codec"     % "1.4",
+      "ch.qos.logback"          % "logback-classic"   % "1.0.7",
       "org.scalatest"          %% "scalatest"         % "1.8"    % "test",
       "org.specs2" %% "specs2" % "1.12.1" % "test",
       "com.codahale" % "jerkson_2.9.1" % "0.5.0"

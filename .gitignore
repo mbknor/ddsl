@@ -33,3 +33,5 @@ src_managed
 
 target
 
+ddsl-cmdline-tool.log
+ddsl-cmdline-tool.log.*
