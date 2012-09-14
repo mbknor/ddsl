@@ -9,6 +9,10 @@ import com.kjetland.ddsl.config._
 import com.kjetland.ddsl.dao._
 import com.kjetland.ddsl.optimizing.SlListOptimizer
 import org.slf4j.LoggerFactory
+import java.net.Inet4Address
+import java.net.InetAddress
+import java.net.NetworkInterface
+import utils.NetUtils
 
 /**
  * Created by IntelliJ IDEA.
@@ -170,13 +174,12 @@ class DdslClientImpl( config : DdslConfig) extends DdslClient{
   private def checkAndResolveLocalIp( ip : String) : String = {
 
     return if( ip == null ){
-      val resolvedIp = InetAddress.getLocalHost().getHostAddress
+      val resolvedIp = NetUtils.resolveLocalPublicIP()
       log.info("Resolved local ip: " + resolvedIp)
       resolvedIp
     }else{
       ip
     }
-
   }
 
 
