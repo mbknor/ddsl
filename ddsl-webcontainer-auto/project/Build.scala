@@ -15,7 +15,9 @@ object DdslWebcontainerAutoBuild extends Build {
       publishTo := Some(Resolvers.mbknorRepository),
       scalacOptions ++= Seq("-Xlint","-deprecation", "-unchecked","-encoding", "utf8"),
       javacOptions ++= Seq("-encoding", "utf8", "-g"),
-      resolvers ++= Seq(DefaultMavenRepository, Resolvers.mbknorGithubRepo, Resolvers.typesafe)
+      resolvers ++= Seq(DefaultMavenRepository
+        , Resolvers.mbknorRepository, Resolvers.mbknorGithubRepo, Resolvers.typesafe
+        )
     )
   )
 
@@ -30,7 +32,7 @@ object DdslWebcontainerAutoBuild extends Build {
 
     val runtime = Seq(
       "com.kjetland"           %% "ddsl"              % BuildSettings.buildVersion,
-      "com.kjetland"            % "webcontainer-info-extractor_2.8.1"   % "1.0",
+      "com.kjetland"           %% "webcontainer-info-extractor"   % "1.1",
       "javax.servlet"           % "servlet-api"       % "2.5"     % "provided"
     )
   }

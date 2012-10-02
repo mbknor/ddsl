@@ -1,7 +1,7 @@
 package com.kjetland.ddsl.web
 
 import javax.servlet.http.HttpServlet
-import org.apache.log4j.Logger
+import org.slf4j._
 import com.kjetland.ddsl._
 import org.joda.time.DateTime
 import com.kjetland.ddsl.model._
@@ -9,6 +9,7 @@ import com.kjetland.ddsl.config._
 import com.kjetland.wcie.{WCInfoExtractor, WCInfo}
 import java.net.InetAddress
 import javax.servlet.{ServletContext, ServletContextEvent, ServletContextListener, ServletConfig}
+import com.kjetland.ddsl.utils._
 
 /**
  * Created by IntelliJ IDEA.
@@ -21,7 +22,7 @@ import javax.servlet.{ServletContext, ServletContextEvent, ServletContextListene
 
 trait DdslServiceBroadcaster {
 
-  val log = Logger.getLogger( getClass )
+  val log = LoggerFactory.getLogger( getClass )
 
   val ddslClient = new DdslClientImpl
 
@@ -54,7 +55,7 @@ trait DdslServiceBroadcaster {
    * Generates base url to you app by resolving, IP, port and context
    */
   def generateBaseUrl( servletContext : ServletContext) : String = {
-    val resolvedIp = InetAddress.getLocalHost().getHostAddress
+    val resolvedIp = NetUtils.resolveLocalPublicIP()
     val wcInfo = getWcInfo( servletContext )
 
     "http://" + resolvedIp + ":" + wcInfo.getPort + wcInfo.getContextPath
