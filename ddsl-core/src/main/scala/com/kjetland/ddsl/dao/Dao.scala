@@ -70,7 +70,9 @@ object DdslDataConverter{
 
 trait Dao{
 
-  def serviceUp( s : Service)
+  // persistent == false => remove/deregister when client disconnects
+  // persistent == true  => leave the config even if the client disconnects
+  def serviceUp( s : Service, persistent:Boolean )
   def serviceDown( s : Service )
   def getSLs(id : ServiceId) : Array[ServiceLocation]
 
@@ -169,8 +171,9 @@ class ZDao (val hosts : String) extends Dao with Watcher {
     }
   }
 
-
-  override def serviceUp( s : Service) {
+  // persistent == false => remove/deregister when client disconnects
+  // persistent == true  => leave the config even if the client disconnects
+  override def serviceUp( s : Service, persistent:Boolean) {
     
     val path = getSidPath(s.id)
     val infoString = DdslDataConverter.getServiceLocationAsString( s.sl )
@@ -198,8 +201,9 @@ class ZDao (val hosts : String) extends Dao with Watcher {
 
     log.debug("status: " + infoString)
     
+    val createMode = if (persistent) CreateMode.PERSISTENT else CreateMode.EPHEMERAL
 
-    client.create( statusPath, infoString.getBytes("utf-8"), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL )
+    client.create( statusPath, infoString.getBytes("utf-8"), ZooDefs.Ids.OPEN_ACL_UNSAFE, createMode )
   }
 
   override def serviceDown( s : Service ) {
@@ -337,8 +341,8 @@ object ZDaoTestMain{
 
     val s = Service(sid,sl)
 
-    dao.serviceUp( s )
-    dao.serviceUp( Service(sid,sl2) )
+    dao.serviceUp( s, false )
+    dao.serviceUp( Service(sid,sl2), false )
 
     println(">>start list")
     dao.getSLs( sid).foreach{println( _ )}

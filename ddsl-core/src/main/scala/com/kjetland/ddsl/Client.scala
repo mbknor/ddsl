@@ -41,7 +41,18 @@ trait DdslClient {
    *
    * Returns true if success
    */
-  def serviceUp( s : Service) : Boolean
+  def serviceUp( s : Service) : Boolean = {
+    return serviceUp(s, false)
+  }
+
+  /**
+   * Tells DDSL that your service is up.. If persistent == false, it will stay as UP forever or until you call
+   * serviceDown, disconnect, or until your app quit.
+   * If persistent == true, it will stay up even after your app quits.
+   *
+   * Returns true if success
+   */
+  def serviceUp( s : Service, persistent : Boolean) : Boolean
 
   /**
    * You can use this method to remove your service from DDSL. This will automatically happen if
@@ -130,11 +141,15 @@ class DdslClientImpl( config : DdslConfig) extends DdslClient{
   val dao = new ZDao( config.hosts )
   
 
-  override def serviceUp( service : Service) : Boolean = {
+  override def serviceUp( service : Service, persistent : Boolean) : Boolean = {
     try{
       val s = checkAndFillInHostIp( service )
-      log.info("Marking service up: " + s)
-      dao.serviceUp( s )
+      if ( persistent ) {
+        log.info("Marking service up: " + s )
+      } else {
+        log.info("Marking service up: " + s  + " [persistent]")
+      }
+      dao.serviceUp( s, persistent )
       return true
     }catch{
       case e : Exception => {
@@ -240,7 +255,7 @@ class DdslClientOnlyFallbackImpl( ddslConfig : DdslConfig) extends DdslClient {
 
   private val log = LoggerFactory.getLogger(getClass)
 
-  override def serviceUp( s : Service) : Boolean = {
+  override def serviceUp( s : Service, persistent:Boolean) : Boolean = {
     log.warn("Ignoring serviceUp: " + s)
     false
   }
@@ -291,7 +306,7 @@ class DdslClientCacheReadsImpl( realClient : DdslClient, ttl_mills : Long) exten
 
 
 
-  override def serviceUp( s : Service) : Boolean = realClient.serviceUp( s )
+  override def serviceUp( s : Service, persistent:Boolean) : Boolean = realClient.serviceUp( s, persistent )
 
   override def serviceDown( s : Service ) : Boolean = realClient.serviceDown( s )
 

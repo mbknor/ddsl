@@ -15,6 +15,7 @@ Here you can find <a href="http://bit.ly/kEhVOc ">my Lightningtalk about DDSL</a
 Project history
 -------------------
 
+ * 20121004 - Added persistent serviceUp - usefull for static resources like databases etc
  * 20120911 - Added [ddsl-cmdline-tool](https://github.com/mbknor/ddsl/tree/master/ddsl-cmdline-tool)
  * 20120907 - (0.3-SNAPSHOT) Upgraded to scala 2.9.2, sbt 0.12, replaced log4j with logback/slf4j, and upgraded to zookeper 3.4.3
  * 201105xx - Added Java example
@@ -103,6 +104,11 @@ When a client wants to get the best location of a specific service:
 	
 It specifies the [ServiceId](http://mbknor.github.com/ddsl-scaladoc/com/kjetland/ddsl/model/ServiceId.html) describing what service it needs, and
 [ClientId](http://mbknor.github.com/ddsl-scaladoc/com/kjetland/ddsl/model/ClientId.html) so DDSL can log which client is using which services.
+
+When using DDSL to plumb your deployment together, you might also want to use DDSL for everything; including finding the database-server, or some other static service. In situations like this, you can save the location in DDSL permanent (Meaning it will not go offline when the DDSL-client disconnects):
+
+	client.serviceUp( Service( serviceId, serviceLocation), true)
+
 
 
 Have a look at the examples to see how it can be used:

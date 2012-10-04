@@ -62,7 +62,7 @@ object App {
     OkResult(Json.generate(r))
   }
 
-  def serviceUp(data: Option[String]): Result = {
+  def serviceUp(data: Option[String], persistent:Boolean): Result = {
 
     if ( data.isEmpty ) {
       return ErrorResult("Missing arg")
@@ -70,7 +70,7 @@ object App {
 
     val s = Json.parse[Service](data.get)
 
-    val sls = client.serviceUp( s )
+    val sls = client.serviceUp( s, persistent )
 
     OkResult(Json.generate(sls))
   }
@@ -103,7 +103,8 @@ object App {
             case "getBestServiceLocation" => getBestServiceLocation(cmd.data)
             case "getServiceLocations" => getServiceLocations(cmd.data)
             case "getAllAvailableServices" => getAllAvailableServices(cmd.data)
-            case "serviceUp" => serviceUp(cmd.data)
+            case "serviceUp" => serviceUp(cmd.data, false)
+            case "serviceUpPersistent" => serviceUp(cmd.data, true)
             case "serviceDown" => serviceDown(cmd.data)
             case _ => ErrorResult("Unknown cmd: " + cmd.cmd)
           }
@@ -135,6 +136,7 @@ object App {
     sb.append("getAllAvailableServices\n")
     val s = Service(ServiceId("test", "http", "cmd-tool", "0.1"), ServiceLocation("http://localhost:4321/hi", 1.0, new DateTime, "127.0.0.1"))
     sb.append("serviceUp " + Json.generate(s) + "\n")
+    sb.append("serviceUpPersistent " + Json.generate(s) + "\n")
     sb.append("serviceDown " + Json.generate(s) + "\n")
     sb.append("help\n")
     sb.append("exit")
