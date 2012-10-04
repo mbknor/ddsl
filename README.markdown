@@ -15,6 +15,7 @@ Here you can find <a href="http://bit.ly/kEhVOc ">my Lightningtalk about DDSL</a
 Project history
 -------------------
 
+ * 20121004 - Version 0.3 released
  * 20121004 - Added persistent serviceUp - usefull for static resources like databases etc
  * 20120911 - Added [ddsl-cmdline-tool](https://github.com/mbknor/ddsl/tree/master/ddsl-cmdline-tool)
  * 20120907 - (0.3-SNAPSHOT) Upgraded to scala 2.9.2, sbt 0.12, replaced log4j with logback/slf4j, and upgraded to zookeper 3.4.3

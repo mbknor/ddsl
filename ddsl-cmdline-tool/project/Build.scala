@@ -45,7 +45,7 @@ object DdslCmdLineToolBuild extends Build {
   object BuildSettings {
 
     val buildOrganization = "com.kjetland"
-    val buildVersion      = "0.3-SNAPSHOT"
+    val buildVersion      = "0.3"
     val buildScalaVersion = "2.9.2"
     val buildSbtVersion   = "0.12"
 

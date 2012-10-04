@@ -6,7 +6,7 @@ Things to do when releaseing or uping versions.
  * change dependency version in ddsl-webcontainer-auto
  * change dependency version in ddsl-cmdline-tool
  * commit it
- * sbt publish ddsl-core
+ * sbt publish and publish-local ddsl-core
  * sbt publish ddsl-webcontainer-auto
  * sbt publish ddsl-cmdline-tool
  
