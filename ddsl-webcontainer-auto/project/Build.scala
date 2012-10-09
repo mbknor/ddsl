@@ -41,7 +41,7 @@ object DdslWebcontainerAutoBuild extends Build {
   object BuildSettings {
 
     val buildOrganization = "com.kjetland"
-    val buildVersion      = "0.3"
+    val buildVersion      = "0.3.1"
     val buildScalaVersion = "2.9.2"
     val buildSbtVersion   = "0.12"
 

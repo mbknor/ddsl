@@ -15,6 +15,7 @@ Here you can find <a href="http://bit.ly/kEhVOc ">my Lightningtalk about DDSL</a
 Project history
 -------------------
 
+ * 20121009 - Version 0.3.1 released - Fixes logger dependency issue
  * 20121004 - Version 0.3 released
  * 20121004 - Added persistent serviceUp - usefull for static resources like databases etc
  * 20120911 - Added [ddsl-cmdline-tool](https://github.com/mbknor/ddsl/tree/master/ddsl-cmdline-tool)

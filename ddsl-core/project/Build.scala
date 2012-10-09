@@ -30,8 +30,9 @@ object DdslCoreBuild extends Build {
 
     val runtime = Seq(
       "org.scala-lang"          % "scala-library"     % "2.9.2",
-      "org.apache.zookeeper"    % "zookeeper"         % "3.4.3" intransitive(),
-      "ch.qos.logback"          % "logback-classic"   % "1.0.7",
+      "org.apache.zookeeper"    % "zookeeper"         % "3.4.3" intransitive(),     
+      "org.slf4j"               % "slf4j-api"         % "1.7.1",
+      "ch.qos.logback"          % "logback-classic"   % "1.0.7"  % "test",
       "org.scalatest"          %% "scalatest"         % "1.8"    % "test",
       "junit"                   % "junit"             % "4.8.2"  % "test",
       "joda-time"               % "joda-time"         % "1.6.2",
@@ -43,7 +44,7 @@ object DdslCoreBuild extends Build {
   object BuildSettings {
 
     val buildOrganization = "com.kjetland"
-    val buildVersion      = "0.3"
+    val buildVersion      = "0.3.1"
     val buildScalaVersion = "2.9.2"
     val buildSbtVersion   = "0.12"
 
