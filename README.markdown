@@ -11,6 +11,8 @@ Have a look at [ddsl-cmdline-tool](https://github.com/mbknor/ddsl/tree/master/dd
 
 Here you can find <a href="http://bit.ly/kEhVOc ">my Lightningtalk about DDSL</a> at Roots Conference in may, 2011.
 
+Please see this [post](https://plus.google.com/116342781887978516536/posts/NhUTkq9pFNo) about how to automatically configure nginx, squid, apache or any other reverse proxy/loadbalancer with online services in DDSL.
+
 
 Project history
 -------------------
