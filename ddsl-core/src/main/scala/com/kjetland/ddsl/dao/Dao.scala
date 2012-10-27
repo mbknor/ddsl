@@ -186,24 +186,22 @@ class ZDao (val hosts : String) extends Dao with Watcher {
     log.debug("Writing status to path: " + statusPath)
 
 
-    //just check if it exsists - if it does delete it, then insert it.
-
-    //TODO: is it possible to update instead of delete/create?
+    // Check if it exsists - if it does update it, else create it
     val stat = client.exists( statusPath, false)
     if( stat != null ){
-      log.debug("statusnode exists - delete it before creating it")
+      log.debug("statusnode exists - updating it: " + infoString)
       try{
-        client.delete(statusPath, stat.getVersion)
+        client.setData( statusPath, infoString.getBytes("utf-8"), -1 )
       }catch{
         case e:Exception => None // ignoring it..
       }
     }
+    else {
+      log.debug("status: " + infoString)
+      val createMode = if (persistent) CreateMode.PERSISTENT else CreateMode.EPHEMERAL
 
-    log.debug("status: " + infoString)
-    
-    val createMode = if (persistent) CreateMode.PERSISTENT else CreateMode.EPHEMERAL
-
-    client.create( statusPath, infoString.getBytes("utf-8"), ZooDefs.Ids.OPEN_ACL_UNSAFE, createMode )
+      client.create( statusPath, infoString.getBytes("utf-8"), ZooDefs.Ids.OPEN_ACL_UNSAFE, createMode )
+    }
   }
 
   override def serviceDown( s : Service ) {
