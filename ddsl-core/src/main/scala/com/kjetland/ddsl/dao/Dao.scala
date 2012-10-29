@@ -1,8 +1,7 @@
 package com.kjetland.ddsl.dao
 
 import org.joda.time.DateTime
-import org.apache.zookeeper.{WatchedEvent, Watcher, CreateMode, ZooKeeper}
-import org.apache.zookeeper.ZooDefs
+import org.apache.zookeeper._
 import java.util.Properties
 import org.joda.time.format.DateTimeFormat
 import java.io.{ByteArrayInputStream, ByteArrayOutputStream}
@@ -12,6 +11,10 @@ import scala.collection.JavaConversions._
 import com.kjetland.ddsl.model._
 import java.util.concurrent.atomic.AtomicBoolean
 import org.slf4j.LoggerFactory
+import com.kjetland.ddsl.model.ServiceId
+import com.kjetland.ddsl.model.Service
+import com.kjetland.ddsl.model.ServiceLocation
+import com.kjetland.ddsl.model.ServiceWithLocations
 
 /**
  * Created by IntelliJ IDEA.
@@ -119,6 +122,15 @@ class ZDao (val hosts : String) extends Dao with Watcher {
     return basePath + sid.environment + "/" + sid.serviceType + "/" + sid.name + "/" + sid.version
   }
 
+  // Wrapper that turns KeeperException into empty list
+  private def getChildren(path:String) : List[String] = {
+    try {
+      client.getChildren(path, false).toList
+    } catch {
+      case e:KeeperException => List()
+    }
+  }
+
   /**
    * Returns a list of all available ServiceIds currently stored in the ddsl-network in zookeeper.
    */
@@ -130,13 +142,13 @@ class ZDao (val hosts : String) extends Dao with Watcher {
     }
 
     //first we look for for all environments
-    val serviceIds = client.getChildren( ddslServicesBasePath, false).map{ a =>
+    val serviceIds = getChildren( ddslServicesBasePath).map{ a =>
       //got all environments
-      client.getChildren( ddslServicesBasePath + "/"+a, false ).map{ b =>
+      getChildren( ddslServicesBasePath + "/"+a ).map{ b =>
         //got all types
-        client.getChildren( ddslServicesBasePath + "/" + a + "/" + b, false ).map { c =>
+        getChildren( ddslServicesBasePath + "/" + a + "/" + b ).map { c =>
           //got all services
-          client.getChildren( ddslServicesBasePath + "/" + a + "/" + b + "/" + c, false ).map { d =>
+          getChildren( ddslServicesBasePath + "/" + a + "/" + b + "/" + c ).map { d =>
             //got all versions
             ServiceId(a, b, c , d)
           }
@@ -189,6 +201,8 @@ class ZDao (val hosts : String) extends Dao with Watcher {
     //just check if it exsists - if it does delete it, then insert it.
 
     //TODO: is it possible to update instead of delete/create?
+    //      If updating, we have to be sure that the EPHEMERAL-stuff (remove on disconnect) is
+    //      is linked to the correct client.
     val stat = client.exists( statusPath, false)
     if( stat != null ){
       log.debug("statusnode exists - delete it before creating it")
@@ -284,7 +298,7 @@ class ZDao (val hosts : String) extends Dao with Watcher {
 
     val sidPath = getSidPath( id )
 
-    val slList = client.getChildren( sidPath, false).map { path : String => {
+    val slList = getChildren( sidPath).map { path : String => {
 
       val string = getInfoString( sidPath+"/"+path )
 
@@ -321,7 +335,7 @@ object ZDaoTestMain{
     try{
       doStuff()
     }catch{
-      case x:Exception => log.error("error", x)
+      case x:Exception => x.printStackTrace()
     }
 
 
@@ -333,6 +347,9 @@ object ZDaoTestMain{
     val hosts = "localhost:2181"
     val dao = new ZDao( hosts )
 
+    println(">>start getAllAvailableServices-list")
+    dao.getAllAvailableServices().foreach{ println(_)}
+    println("<<end getAllAvailableServices-list")
 
     val sid = ServiceId("test", "http", "testService", "1.0")
     val sl = ServiceLocation("http://localhost/url", 10.0, new DateTime(), "127.0.0.1")
@@ -360,5 +377,6 @@ object ZDaoTestMain{
     println("<<end list")
 
     Thread.sleep(100000)
+
   }
 }
