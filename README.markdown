@@ -19,6 +19,7 @@ Check out [ddslConfigWriter](https://github.com/mbknor/ddslConfigWriter) which a
 Project history
 -------------------
 
+ * 20130211 - Version 0.3.3 released - using Scala 2.10.0
  * 20121029 - Version 0.3.2 released
  * 20121029 - Fixes #6 - Prevent exception when querying a never-used zookeeper
  * 20121009 - Version 0.3.1 released - Fixes logger dependency issue

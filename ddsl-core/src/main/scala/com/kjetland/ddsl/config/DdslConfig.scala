@@ -75,7 +75,7 @@ class DdslConfigFromFile( file : File) extends DdslConfig {
       try{
         if( in != null) in.close
       }catch{
-        case _ => None//do nothing
+        case _ : Exception => None//do nothing
       }
     }
   }

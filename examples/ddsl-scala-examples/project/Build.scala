@@ -33,8 +33,8 @@ object DdslExampleBuild extends Build {
   object BuildSettings {
 
     val buildOrganization = "com.kjetland"
-    val buildVersion      = "0.3.2"
-    val buildScalaVersion = "2.9.2"
+    val buildVersion      = "0.3.3"
+    val buildScalaVersion = "2.10.0"
     val buildSbtVersion   = "0.12"
 
     val buildSettings = Defaults.defaultSettings ++ Seq (

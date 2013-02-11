@@ -63,7 +63,7 @@ object DdslServiceConsumer{
         socket.close
 
       }catch{
-        case _ => println("Error communicating")
+        case _ : Exception => println("Error communicating")
       }
       Thread.sleep(1500)
 

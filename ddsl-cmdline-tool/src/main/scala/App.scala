@@ -1,21 +1,19 @@
 package com.kjetland.ddslcmdlinetool
 
 import com.kjetland.ddsl.{DdslClient, DdslClientImpl}
-import com.codahale.jerkson.Json
 import com.kjetland.ddsl.model._
 import org.slf4j.LoggerFactory
-import com.kjetland.ddslcmdlinetool.ErrorResult
 import com.kjetland.ddsl.model.ServiceId
-import com.kjetland.ddslcmdlinetool.OkResult
-import com.kjetland.ddslcmdlinetool.Result
-import com.kjetland.ddslcmdlinetool.CmdParsed
 import com.kjetland.ddsl.model.ServiceRequest
 import com.kjetland.ddsl.model.ClientId
-import com.kjetland.ddslcmdlinetool.ExitResult
 import scala.Some
 import com.kjetland.ddsl.model.ServiceLocation
 import org.joda.time.DateTime
-
+import com.fasterxml.jackson.module.scala.DefaultScalaModule
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.SerializationConfig
+import com.fasterxml.jackson.datatype.joda.JodaModule
+import java.text.SimpleDateFormat
 
 case class DdslError(val msg: String ) extends Exception
 
@@ -23,26 +21,35 @@ case class CmdBase()
 
 case class CmdParsed(val cmd:String, val data:Option[String])
 
-case class Result(val success : Boolean, val msg : String)
+trait Result {
+  def msg : String
+}
 
-case class OkResult(override val msg : String) extends Result(true, msg)
-case class ErrorResult(override val msg : String) extends Result(false, msg)
-case class ExitResult() extends OkResult("Quiting")
+trait SuccessResult extends Result {}
+
+case class OkResult(val msg : String) extends SuccessResult
+case class ErrorResult(val msg : String) extends Result
+case class ExitResult(val msg : String = "Quiting") extends Result
 object App {
 
   val client : DdslClient = new DdslClientImpl
   val logger = LoggerFactory.getLogger(classOf[App])
+
+  val json = new ObjectMapper()
+  json.registerModule(DefaultScalaModule)
+  json.registerModule(new JodaModule())
+  json.setDateFormat(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ"))
 
   def getBestServiceLocation(data: Option[String]): Result = {
     if ( data.isEmpty ) {
       return ErrorResult("Missing arg")
     }
 
-    val sr = Json.parse[ServiceRequest](data.get)
+    val sr = json.readValue( data.get, classOf[ServiceRequest] )
 
     val sl : ServiceLocation = client.getBestServiceLocation( sr)
 
-    OkResult(Json.generate(sl))
+    OkResult(json.writeValueAsString(sl))
   }
 
   def getServiceLocations(data: Option[String]): Result = {
@@ -50,16 +57,16 @@ object App {
       return ErrorResult("Missing arg")
     }
 
-    val sr = Json.parse[ServiceRequest](data.get)
+    val sr = json.readValue(data.get, classOf[ServiceRequest])
 
     val sls = client.getServiceLocations( sr)
 
-    OkResult(Json.generate(sls))
+    OkResult(json.writeValueAsString(sls))
   }
 
   def getAllAvailableServices(data: Option[String]): Result = {
     val r = client.getAllAvailableServices()
-    OkResult(Json.generate(r))
+    OkResult(json.writeValueAsString(r))
   }
 
   def serviceUp(data: Option[String], persistent:Boolean): Result = {
@@ -68,11 +75,11 @@ object App {
       return ErrorResult("Missing arg")
     }
 
-    val s = Json.parse[Service](data.get)
+    val s = json.readValue(data.get, classOf[Service])
 
     val sls = client.serviceUp( s, persistent )
 
-    OkResult(Json.generate(sls))
+    OkResult(json.writeValueAsString(sls))
   }
 
   def serviceDown(data: Option[String]): Result = {
@@ -81,11 +88,11 @@ object App {
       return ErrorResult("Missing arg")
     }
 
-    val s = Json.parse[Service](data.get)
+    val s = json.readValue(data.get, classOf[Service])
 
     val sls = client.serviceDown( s )
 
-    OkResult(Json.generate(sls))
+    OkResult(json.writeValueAsString(sls))
   }
 
 
@@ -116,7 +123,7 @@ object App {
         }
 
 
-        sendResponse(r.success, r.msg)
+        sendResponse(r)
         if ( r.isInstanceOf[ExitResult]) {
           // Quiting
           return
@@ -131,13 +138,13 @@ object App {
   def processHelp() : Result = {
     val sb = new StringBuilder
     val sr = ServiceRequest(ServiceId("test","telnet","telnetServer","0.1"), ClientId("Client env", "client name", "version", "ip-address" ))
-    sb.append("getBestServiceLocation " + Json.generate(sr) + "\n")
-    sb.append("getServiceLocations " + Json.generate(sr) + "\n")
+    sb.append("getBestServiceLocation " + json.writeValueAsString(sr) + "\n")
+    sb.append("getServiceLocations " + json.writeValueAsString(sr) + "\n")
     sb.append("getAllAvailableServices\n")
     val s = Service(ServiceId("test", "http", "cmd-tool", "0.1"), ServiceLocation("http://localhost:4321/hi", 1.0, new DateTime, "127.0.0.1"))
-    sb.append("serviceUp " + Json.generate(s) + "\n")
-    sb.append("serviceUpPersistent " + Json.generate(s) + "\n")
-    sb.append("serviceDown " + Json.generate(s) + "\n")
+    sb.append("serviceUp " + json.writeValueAsString(s) + "\n")
+    sb.append("serviceUpPersistent " + json.writeValueAsString(s) + "\n")
+    sb.append("serviceDown " + json.writeValueAsString(s) + "\n")
     sb.append("help\n")
     sb.append("exit")
 
@@ -145,9 +152,9 @@ object App {
     return OkResult("Available commands:\n" + sb)
   }
 
-  def sendResponse(success:Boolean, msg : String) {
-    val status = if (success) "ok " else "error "
-    println( status + msg )
+  def sendResponse( r: Result) {
+    val status = if (r.isInstanceOf[SuccessResult]) "ok " else "error "
+    println( status + r.msg )
   }
 
   def parseCmd(cmdString : String) : CmdParsed = {

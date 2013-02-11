@@ -291,7 +291,7 @@ class ZDao (val hosts : String) extends Dao with Watcher {
         val bytes = client.getData( path, false, stat)
         new String( bytes, "utf-8")
       }catch{
-        case _ => null //return null if error - node might have gone offline since we created the list
+        case _ : Exception => null //return null if error - node might have gone offline since we created the list
       }
 
     }

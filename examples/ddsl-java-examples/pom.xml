@@ -4,7 +4,7 @@
 
   <groupId>com.kjetland</groupId>
   <artifactId>ddsl-java-examples</artifactId>
-  <version>0.3.2</version>
+  <version>0.3.3</version>
 
   <repositories>
         <repository>
@@ -17,8 +17,8 @@
   <dependencies>
     <dependency>
       <groupId>com.kjetland</groupId>
-      <artifactId>ddsl_2.9.2</artifactId>
-      <version>0.3.2</version>
+      <artifactId>ddsl_2.10.0</artifactId>
+      <version>0.3.3</version>
     </dependency>
 	<dependency>
 		<groupId>log4j</groupId>

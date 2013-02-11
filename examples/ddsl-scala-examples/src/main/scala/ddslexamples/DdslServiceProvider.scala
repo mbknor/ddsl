@@ -72,7 +72,7 @@ object DdslServiceProvider{
           }
         }
       }catch{
-        case _ => println("Lost connection")
+        case _ : Exception => println("Lost connection")
       }
 
 

@@ -34,9 +34,10 @@ object DdslCmdLineToolBuild extends Build {
       "joda-time"               % "joda-time"         % "1.6.2",
       "commons-codec"           % "commons-codec"     % "1.4",
       "ch.qos.logback"          % "logback-classic"   % "1.0.7",
-      "org.scalatest"          %% "scalatest"         % "1.8"    % "test",
-      "org.specs2" %% "specs2" % "1.12.1" % "test",
-      "com.codahale" % "jerkson_2.9.1" % "0.5.0"
+      "org.scalatest"          %% "scalatest"         % "1.9"    % "test",
+      "org.specs2" %% "specs2" % "1.12.3" % "test",
+      "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.1.3",
+      "com.fasterxml.jackson.datatype" % "jackson-datatype-joda" % "2.1.1" intransitive()
 
     )
   }
@@ -45,8 +46,8 @@ object DdslCmdLineToolBuild extends Build {
   object BuildSettings {
 
     val buildOrganization = "com.kjetland"
-    val buildVersion      = "0.3.2"
-    val buildScalaVersion = "2.9.2"
+    val buildVersion      = "0.3.3"
+    val buildScalaVersion = "2.10.0"
     val buildSbtVersion   = "0.12"
 
     val buildSettings = Defaults.defaultSettings ++ Seq (
