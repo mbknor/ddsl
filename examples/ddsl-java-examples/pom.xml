@@ -17,7 +17,7 @@
   <dependencies>
     <dependency>
       <groupId>com.kjetland</groupId>
-      <artifactId>ddsl_2.10.0</artifactId>
+      <artifactId>ddsl_2.10</artifactId>
       <version>0.3.3</version>
     </dependency>
 	<dependency>
