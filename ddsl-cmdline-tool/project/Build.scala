@@ -29,7 +29,7 @@ object DdslCmdLineToolBuild extends Build {
   object Dependencies {
 
     val runtime = Seq(
-      "com.kjetland" %% "ddsl" % BuildSettings.buildVersion intransitive(),
+      "com.kjetland" %% "ddsl" % BuildSettings.ddslVersion intransitive(),
       "org.apache.zookeeper"    % "zookeeper"         % "3.4.3" intransitive(), // Explicit include here to make it intransitive..
       "joda-time"               % "joda-time"         % "1.6.2",
       "commons-codec"           % "commons-codec"     % "1.4",
@@ -45,8 +45,9 @@ object DdslCmdLineToolBuild extends Build {
 
   object BuildSettings {
 
+    val ddslVersion       = "0.3.3"
     val buildOrganization = "com.kjetland"
-    val buildVersion      = "0.3.3"
+    val buildVersion      = "0.3.4-SNAPSHOT"
     val buildScalaVersion = "2.10.0"
     val buildSbtVersion   = "0.12"
 
