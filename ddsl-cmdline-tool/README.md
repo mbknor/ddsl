@@ -35,11 +35,12 @@ And if not success:
 Some examples
 --------------
 
+Download it or [build it](build-info.md)...
+
+
 **Start it**:
 
-    sbt run
-
-You need sbt for the time being. get it with "brew install sbt".
+    java -jar ddsl-cmdline-tool_2.10-0.3.4-SNAPSHOT-one-jar.jar
 
 If you want to customize where to find the ddsl_config.properties you can eigher set it as system environment variable like this:
 
@@ -47,7 +48,7 @@ If you want to customize where to find the ddsl_config.properties you can eigher
 
 or you can start it like this:
 
-    sbt -DDDSL_CONFIG_PATH=../ddsl-core/ddsl_config.properties run
+    java -DDDSL_CONFIG_PATH=../ddsl-core/ddsl_config.properties -jar target/scala-2.10/ddsl-cmdline-tool_2.10-0.3.4-SNAPSHOT-one-jar.jar
 
 **How to get help**?
 
@@ -76,9 +77,4 @@ Example:
 
 Good luck :)
 
-
-Todo
----------------
-
-* Make a distribution so it can be used without sbt
 

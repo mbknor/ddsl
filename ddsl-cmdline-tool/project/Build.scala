@@ -1,5 +1,7 @@
 import sbt._
 import Keys._
+import com.github.retronym.SbtOneJar
+
 
 object DdslCmdLineToolBuild extends Build {
 
@@ -15,8 +17,9 @@ object DdslCmdLineToolBuild extends Build {
       publishTo := Some(Resolvers.mbknorRepository),
       scalacOptions ++= Seq("-Xlint","-deprecation", "-unchecked","-encoding", "utf8"),
       javacOptions ++= Seq("-encoding", "utf8", "-g"),
-      resolvers ++= Seq(DefaultMavenRepository, Resolvers.mbknorGithubRepo, Resolvers.typesafe)
-    )
+      resolvers ++= Seq(DefaultMavenRepository, Resolvers.mbknorGithubRepo, Resolvers.typesafe),
+      exportJars := true
+    ) ++ SbtOneJar.oneJarSettings
   )
 
 
