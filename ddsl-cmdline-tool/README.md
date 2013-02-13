@@ -59,11 +59,13 @@ Type the command 'help' (then enter):
 Which prints out this help with available commands and example json:
 
     ok Available commands:
+    setZookeeperHosts ["localhost:2181","some.other.server.com:2181"]
     getBestServiceLocation {"sid":{"environment":"test","serviceType":"telnet","name":"telnetServer","version":"0.1"},"cid":{"environment":"Client env","name":"client name","version":"version","ip":"ip-address"}}
     getServiceLocations {"sid":{"environment":"test","serviceType":"telnet","name":"telnetServer","version":"0.1"},"cid":{"environment":"Client env","name":"client name","version":"version","ip":"ip-address"}}
     getAllAvailableServices
     serviceUp {"id":{"environment":"test","serviceType":"http","name":"cmd-tool","version":"0.1"},"sl":{"url":"http://localhost:4321/hi","quality":1.0,"lastUpdated":1347398923243,"ip":"127.0.0.1"}}
     serviceDown {"id":{"environment":"test","serviceType":"http","name":"cmd-tool","version":"0.1"},"sl":{"url":"http://localhost:4321/hi","quality":1.0,"lastUpdated":1347398923243,"ip":"127.0.0.1"}}
+    setFallbackUrlsMap {"ServiceId(test,telnet,telnetServer,0.1)":"http://example.com/foo","ServiceId(test,http,BarServer,1.0)":"http://example.com/bar"}
     help
     exit
 
@@ -74,6 +76,8 @@ Example:
 
     Send:     getAllAvailableServices\n
     Receive:  ok [{"id":{"environment":"test","serviceType":"telnet","name":"telnetServer","version":"0.1"},"locations":[{"url":"telnet://localhost:40039","quality":0.0,"lastUpdated":1347396898000,"ip":"10.0.0.7"},{"url":"telnet://localhost:40080","quality":0.0,"lastUpdated":1347396537000,"ip":"10.0.0.7"}]}]
+
+Use 'setZookeeperHosts' when configuring the list of zookeeper-nodes
 
 Good luck :)
 
