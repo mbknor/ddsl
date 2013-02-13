@@ -50,7 +50,7 @@ object DdslCmdLineToolBuild extends Build {
 
     val ddslVersion       = "0.3.3"
     val buildOrganization = "com.kjetland"
-    val buildVersion      = "0.3.4"
+    val buildVersion      = "0.3.5-SNAPSHOT"
     val buildScalaVersion = "2.10.0"
     val buildSbtVersion   = "0.12"
 
