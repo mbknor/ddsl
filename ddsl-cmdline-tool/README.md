@@ -35,20 +35,12 @@ And if not success:
 Some examples
 --------------
 
-Download it or [build it](build-info.md)...
+[Download it](http://mbknor.github.com/downloads/ddsl-cmdline-tool_2.10-0.3.4-one-jar.jar) or [build it](build-info.md)...
 
 
 **Start it**:
 
-    java -jar ddsl-cmdline-tool_2.10-0.3.4-SNAPSHOT-one-jar.jar
-
-If you want to customize where to find the ddsl_config.properties you can eigher set it as system environment variable like this:
-
-    export DDSL_CONFIG_PATH=../ddsl-core/ddsl_config.properties
-
-or you can start it like this:
-
-    java -DDDSL_CONFIG_PATH=../ddsl-core/ddsl_config.properties -jar target/scala-2.10/ddsl-cmdline-tool_2.10-0.3.4-SNAPSHOT-one-jar.jar
+    java -jar ddsl-cmdline-tool_2.10-0.3.4-one-jar.jar
 
 **How to get help**?
 
