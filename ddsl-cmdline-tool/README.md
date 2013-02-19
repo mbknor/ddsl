@@ -4,14 +4,16 @@ DDSL Command Line Tool
 What is this?
 ----------------
 
-[Ddsl](https://github.com/mbknor/ddsl) is implemented using Scala and is easy to include in your Scala/Java application,
-but if you are using a none-JVM-language (Eg. Ruby on Rails) for your application you can use this **ddsl-cmdline-tool**.
+[DDSL](https://github.com/mbknor/ddsl) is implemented using Scala and is easy to include in your Scala/Java application,
+but if you are using a none-JVM-language, or just loves the command-line, your can use **ddsl-cmdline-tool**.
 
 How to use it
 ---------------
 
 You can launch **ddsl-cmdline-tool** in a childprocess from your own app/process.
 As long as you make sure that you kill (or it dies) if you die or quit, then you are fine.
+
+Have a look at this [Ruby-wrapper](https://github.com/bmaland/ddslbg) to see how it can be done in ruby (Thanks to Bjørn Arild Mæland)
 
 If you are using **serviceUp** it is important to kill/quit **ddsl-cmdline-tool** if your app dies/quits,
 to make sure your service is taken offline.
