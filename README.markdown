@@ -5,11 +5,12 @@ DDSL - Dynamic Distributed Service Locator
 
  * Plug and play dynamic Cluster
 
- * Now also with modules for 
- ** [Play Framework 1.x](https://github.com/mbknor/ddsl-playframework-module)
- ** [Play Framework 2](https://github.com/mbknor/ddsl-play2-module)
- ** [Dropwizard](https://github.com/mbknor/ddsl-dropwizard)
- ** [Ruby](https://github.com/bmaland/ddslbg) (Thanks to Bjørn Arild Mæland)
+ Now also with modules for:
+ 
+ * [Play Framework 1.x](https://github.com/mbknor/ddsl-playframework-module)
+ * [Play Framework 2](https://github.com/mbknor/ddsl-play2-module)
+ * [Dropwizard](https://github.com/mbknor/ddsl-dropwizard)
+ * [Ruby](https://github.com/bmaland/ddslbg) (Thanks to Bjørn Arild Mæland)
 
 DDSL is written in Scala and can be used by Scala, Java or any other Language on the JVM.
 
