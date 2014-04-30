@@ -25,7 +25,8 @@ object DdslExampleBuild extends Build {
 
     val runtime = Seq(
       "com.kjetland"          %% "ddsl"              % BuildSettings.buildVersion,
-      "ch.qos.logback"         % "logback-classic"   % "1.0.7"
+      "ch.qos.logback"         % "logback-classic"   % "1.0.13",
+      "org.scala-lang"         % "scala-library"     % "2.10.0"
     )
   }
 
@@ -35,7 +36,7 @@ object DdslExampleBuild extends Build {
     val buildOrganization = "com.kjetland"
     val buildVersion      = "0.3.3"
     val buildScalaVersion = "2.10.0"
-    val buildSbtVersion   = "0.12"
+    val buildSbtVersion   = "0.13.0"
 
     val buildSettings = Defaults.defaultSettings ++ Seq (
       organization   := buildOrganization,
