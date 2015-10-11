@@ -1,8 +1,7 @@
 package com.kjetland.ddsl.dao
 
+import org.scalatest.FunSuite
 import org.scalatest.junit.{AssertionsForJUnit, JUnitSuite}
-import org.junit.Test
-import org.junit.Assert._
 import org.joda.time.DateTime
 import com.kjetland.ddsl.model._
 
@@ -14,16 +13,16 @@ import com.kjetland.ddsl.model._
  * To change this template use File | Settings | File Templates.
  */
 
-class DdslDataConverterTest  extends AssertionsForJUnit with JUnitSuite{
+class DdslDataConverterTest  extends FunSuite{
 
 
-  @Test def verifyConverting(){
+  test("verifyConverting"){
     val sl = ServiceLocation("http://localhost/url", 10.0, new DateTime(2011, 1, 16, 13, 10, 1,0), "127.0.0.1")
 
     val s = DdslDataConverter.getServiceLocationAsString( sl)
     val sl2 = DdslDataConverter.getServiceLocationFromString( s )
 
-    assertEquals( sl, sl2)
+    assert( sl == sl2)
 
   }
 }

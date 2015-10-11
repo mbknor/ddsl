@@ -1,16 +1,14 @@
 package com.kjetland.ddsl.utils
 
-import org.junit.Test
-import org.scalatest.junit.{JUnitSuite, AssertionsForJUnit}
-import org.junit.Assert._
+import org.scalatest.{Matchers, FunSuite}
 
-class NetUtilsTest extends AssertionsForJUnit with JUnitSuite {
+class NetUtilsTest extends FunSuite with Matchers {
 
 
-  @Test def testResolveLocalPublicIP() {
+  test("testResolveLocalPublicIP") {
     val ip = NetUtils.resolveLocalPublicIP()
-    assertNotNull(ip)
-    assertTrue(ip.length >0)
+    assert(ip != null)
+    assert(ip.length >0)
     System.out.println("local ip:" + ip)
   }
 

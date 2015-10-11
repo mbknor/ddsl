@@ -33,10 +33,9 @@ object DdslCoreBuild extends Build {
       "org.apache.zookeeper"    % "zookeeper"         % "3.4.6" intransitive(),
       "org.slf4j"               % "slf4j-api"         % "1.7.1",
       "ch.qos.logback"          % "logback-classic"   % "1.0.7"  % "test",
-      "org.scalatest"          %% "scalatest"         % "1.9"    % "test",
-      "junit"                   % "junit"             % "4.8.2"  % "test",
-      "joda-time"               % "joda-time"         % "1.6.2",
-      "commons-codec"           % "commons-codec"     % "1.4"
+      "org.scalatest"          %% "scalatest"         % "2.2.4"  % "test",
+      "joda-time"               % "joda-time"         % "2.8.2",
+      "commons-codec"           % "commons-codec"     % "1.10"
     )
   }
 
@@ -45,7 +44,7 @@ object DdslCoreBuild extends Build {
 
     val buildOrganization = "com.kjetland"
     val buildVersion      = "0.3.5-SNAPSHOT"
-    val buildScalaVersion = "2.10.3"
+    val buildScalaVersion = "2.11.7"
     val buildSbtVersion   = "0.13.0"
 
     val buildSettings = Defaults.defaultSettings ++ Seq (
